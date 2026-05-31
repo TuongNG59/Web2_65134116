@@ -72,4 +72,8 @@ public class HoaDonService {
         });
     }
 
+    // Xóa hóa đơn
+    public void deleteHoaDon(Long id) {
+        hoaDonRepository.deleteById(id);
+    }
 }
