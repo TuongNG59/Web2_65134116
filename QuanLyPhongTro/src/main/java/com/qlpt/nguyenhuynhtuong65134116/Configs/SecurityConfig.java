@@ -14,12 +14,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/").permitAll() // Cho phép tất cả mọi người truy cập link Trang chủ ("/")
-                // Các link CSS, JS, Hình ảnh (nếu có sau này) cũng được thả cửa
-                .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() 
-                .anyRequest().authenticated() // Tất cả các link khác (như thuê phòng, quản lý) đều bắt buộc Đăng nhập
+                // Mở cửa cho Trang chủ, Đăng nhập, Đăng ký
+                .requestMatchers("/", "/dangnhap", "/dangky").permitAll() 
+                .anyRequest().authenticated()
             )
-            .formLogin(form -> form.permitAll()); // Vẫn giữ nguyên form đăng nhập mặc định của Spring
+            .formLogin(form -> form
+                .loginPage("/dangnhap") // Chỉ định đường dẫn tới trang đăng nhập tự làm
+                .loginProcessingUrl("/xuly-dangnhap") // Link ảo để Spring tự động bắt username/password
+                .defaultSuccessUrl("/", true) // Đăng nhập thành công thì quay về Trang chủ
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/dangxuat") // Link ảo để đăng xuất
+                .logoutSuccessUrl("/") // Đăng xuất xong về Trang chủ
+                .permitAll()
+            );
 
         return http.build();
     }
