@@ -14,4 +14,8 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long> {
     
     // Hàm tìm kiếm bằng Email phục vụ cho tính năng Quên mật khẩu
     Optional<NguoiDung> findByEmail(String email);
+    // Tìm người dùng bằng Token kích hoạt (dùng khi khách bấm vào link Gmail)
+    Optional<NguoiDung> findByTokenKichHoat(String token);
+    // Tìm người dùng bằng mã OTP (dùng khi khách nhập 6 số)
+    Optional<NguoiDung> findByMaOTP(String otp);
 }

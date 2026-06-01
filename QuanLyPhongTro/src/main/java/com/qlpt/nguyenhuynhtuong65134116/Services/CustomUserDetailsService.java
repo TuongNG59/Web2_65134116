@@ -32,11 +32,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         NguoiDung nd = taiKhoanXamp.get();
 
-        // 3. Đóng gói dữ liệu từ MySQL của cậu thành chuẩn "UserDetails" để nộp cho Spring Security duyệt
+        // Kiểm tra trạng thái kích hoạt (đề phòng trường hợp dưới DB bị null thì mặc định là false)
+        boolean isEnabled = nd.getTrangThai() != null ? nd.getTrangThai() : false;
+
+        // Đóng gói dữ liệu với đầy đủ thông số bảo mật
         return new User(
                 nd.getTenDangNhap(),
-                nd.getMatKhau(), // Mật khẩu dạng hash BCrypt dưới database
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + nd.getVaiTro())) // Cấp quyền ADMIN hoặc USER
+                nd.getMatKhau(), 
+                isEnabled, // true = Cho phép đăng nhập, false = Tài khoản bị vô hiệu hóa
+                true,      // accountNonExpired (Tài khoản không hết hạn)
+                true,      // credentialsNonExpired (Mật khẩu không hết hạn)
+                true,      // accountNonLocked (Tài khoản không bị khóa)
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + nd.getVaiTro()))
         );
     }
 }

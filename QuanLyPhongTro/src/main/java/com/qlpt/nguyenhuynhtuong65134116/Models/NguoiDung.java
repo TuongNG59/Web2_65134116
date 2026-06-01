@@ -62,6 +62,12 @@ public class NguoiDung {
 		this.phongTro = phongTro;
 	}
 
+    private String tokenKichHoat;
+
+    private String maOTP;
+
+    private java.time.LocalDateTime hanSuDungOTP;
+    
 	public Long getId() {
 		return id;
 	}
@@ -141,4 +147,29 @@ public class NguoiDung {
 	public void setPhongTro(PhongTro phongTro) {
 		this.phongTro = phongTro;
 	}
+
+	public String getTokenKichHoat() {
+		return tokenKichHoat;
+	}
+
+	public void setTokenKichHoat(String tokenKichHoat) {
+		this.tokenKichHoat = tokenKichHoat;
+	}
+
+	public String getMaOTP() {
+		return maOTP;
+	}
+
+	public void setMaOTP(String maOTP) {
+		this.maOTP = maOTP;
+	}
+
+	public java.time.LocalDateTime getHanSuDungOTP() {
+		return hanSuDungOTP;
+	}
+
+	public void setHanSuDungOTP(java.time.LocalDateTime hanSuDungOTP) {
+		this.hanSuDungOTP = hanSuDungOTP;
+	}
+	
 }

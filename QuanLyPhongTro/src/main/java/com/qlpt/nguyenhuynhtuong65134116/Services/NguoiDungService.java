@@ -69,4 +69,15 @@ public class NguoiDungService {
     public void deleteNguoiDung(Long id) {
         nguoiDungRepository.deleteById(id);
     }
+    
+    // 1. Hàm lưu tài khoản mới khi đăng ký
+    public void luuTaiKhoan(com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung nguoiDung) {
+        nguoiDungRepository.save(nguoiDung); 
+    }
+
+    // 2. Hàm tìm người dùng bằng Token
+    public java.util.Optional<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> findByTokenKichHoat(String token) {
+        return nguoiDungRepository.findByTokenKichHoat(token);
+    }
+
 }

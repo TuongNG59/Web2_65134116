@@ -16,6 +16,7 @@
         <h2>Đăng Ký Khách Thuê</h2>
         
         <form th:action="@{/dangky}" th:object="${nguoiDung}" method="post">
+        	<input type="email" th:field="*{email}" placeholder="Địa chỉ Gmail cá nhân" required/>
             <input type="text" th:field="*{tenDangNhap}" placeholder="Tên đăng nhập" required />
             <input type="password" th:field="*{matKhau}" placeholder="Mật khẩu" required />
             <input type="text" th:field="*{hoVaTen}" placeholder="Họ và tên" required />

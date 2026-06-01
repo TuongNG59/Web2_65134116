@@ -17,7 +17,21 @@
         
         <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">Sai tên đăng nhập hoặc mật khẩu!</div>
         <div th:if="${param.thanhcong}" style="color: green; margin-bottom: 10px;">Đăng ký thành công! Hãy đăng nhập.</div>
+		<div style="text-align: center; margin-bottom: 15px;">
+    
+    	<div th:if="${param.dang_ky_thanh_cong_vui_long_check_mail}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
+        	🎉 Đăng ký thành công! Vui lòng kiểm tra hộp thư Email để kích hoạt tài khoản.
+    	</div>
 
+    	<div th:if="${param.kich_hoat_thanh_cong}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
+        	✅ Kích hoạt tài khoản thành công! Bạn có thể đăng nhập ngay bây giờ.
+    	</div>
+
+    	<div th:if="${param.kich_hoat_that_bai}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px; font-weight: bold;">
+        ❌ Link kích hoạt không hợp lệ hoặc đã được sử dụng!
+    	</div>
+
+		</div>
         <form th:action="@{/xuly-dangnhap}" method="post">
             <input type="text" name="username" placeholder="Tên đăng nhập" required />
             <input type="password" name="password" placeholder="Mật khẩu" required />
