@@ -14,12 +14,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                // Mở cửa cho Trang chủ, Đăng nhập, Đăng ký
-                .requestMatchers("/", "/dangnhap", "/dangky", "/kich-hoat", "/quen-mat-khau/**", "/error").permitAll() 
-                .requestMatchers("/css/**", "/images/**", "/js/**", "/images/uploads/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/thue-phong/**").authenticated()
-                .anyRequest().authenticated()
+            		// 1. Các link công khai ai cũng vào được (permitAll)
+                    .requestMatchers("/", "/dangnhap", "/dangky", "/kich-hoat", "/quen-mat-khau/**", "/error").permitAll() 
+                    .requestMatchers("/css/**", "/images/**", "/js/**", "/images/uploads/**").permitAll()
+                    
+                    // 2. Bảo vệ nghiêm ngặt khu vực Admin: Chỉ tài khoản có vai trò ADMIN mới được vào
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    
+                    // 3. Chỉ cần ĐĂNG NHẬP THÀNH CÔNG (authenticated) là được vào xem Hóa đơn và Chat
+                    .requestMatchers("/hoa-don-cua-toi/**", "/tro-chuyen/**").authenticated()
+                    
+                    // 4. Các đường dẫn còn lại bắt buộc phải đăng nhập
+                    .requestMatchers("/thue-phong/**").authenticated()
+                    .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/dangnhap") // Chỉ định đường dẫn tới trang đăng nhập tự làm

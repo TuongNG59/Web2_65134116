@@ -1,5 +1,7 @@
 package com.qlpt.nguyenhuynhtuong65134116.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -48,11 +50,20 @@ public class ChatController {
     // Xem danh sách và chat với 1 khách cụ thể theo id
     @GetMapping("/admin/tro-chuyen/{khachId}")
     public String chatCuaAdmin(@PathVariable("khachId") Long khachId, Model model) {
-        model.addAttribute("danhSachKhach", nguoiDungService.layTatCaNguoiDung()); // Để hiện danh sách bên trái
+        // Lấy tất cả người dùng dưới DB lên
+        List<NguoiDung> tatCa = nguoiDungService.layTatCaNguoiDung();
+        
+        // Mẹo nhỏ: Chỉ giữ lại những người có vai trò là USER (Khách thuê) trong danh sách bên trái
+        List<NguoiDung> danhSachKhachThu_e = tatCa.stream()
+            .filter(u -> "USER".equalsIgnoreCase(u.getVaiTro()))
+            .collect(java.util.stream.Collectors.toList());
+            
+        model.addAttribute("danhSachKhach", danhSachKhachThu_e);
         model.addAttribute("lichSuChat", thongBaoService.getCuocTroChuyenVoiAdmin(khachId));
         model.addAttribute("khachDangChat", nguoiDungService.findById(khachId));
         model.addAttribute("myId", ADMIN_ID);
-        return "admin/chat_admin"; // Tạo file chat_admin.html trong thư mục templates/admin/
+        
+        return "admin/chat_admin";
     }
 
     // Admin nhấn gửi trả lời khách

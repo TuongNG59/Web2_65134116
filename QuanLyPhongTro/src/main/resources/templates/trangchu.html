@@ -21,7 +21,7 @@
 </head>
 <body>
 	<nav class="navbar">
-        <a class="navbar-brand" href="/">🏠 Nhà Trọ Adou, đ/c: Ô 12, Lô 545, Đặng Thai Mai, Nam Nha Trang</a>
+        <a class="navbar-brand" href="/">🏠 Nhà Trọ Adou, Ô 12, Lô 545, Đặng Thai Mai, Nam Nha Trang</a>
         
         <div class="navbar-menu">
             <div sec:authorize="isAnonymous()" style="display: flex; gap: 10px;">
@@ -31,15 +31,15 @@
 
             <div sec:authorize="isAuthenticated()" style="display: flex; gap: 15px; align-items: center;">
                 
-                <div sec:authorize="hasRole('USER')" style="display: flex; gap: 10px;">
-                    <a class="nav-link" href="/hoa-don-cua-toi">🧾 Hóa Đơn Của Tôi</a>
-                </div>
+				<div sec:authorize="!hasRole('ADMIN')" style="display: flex; gap: 10px;">
+				    <a class="nav-link" href="/hoa-don-cua-toi">🧾 Hóa Đơn Của Tôi</a>
+				    <a class="nav-link" href="/tro-chuyen" style="background-color: #3498db; color: white; border-radius: 4px;">💬 Trò Chuyện</a>
+				</div>
 
-                <div sec:authorize="hasRole('ADMIN')" style="display: flex; gap: 10px;">
+				<div sec:authorize="hasRole('ADMIN')" style="display: flex; gap: 10px;">
                     <a class="nav-link" href="/admin/phong" style="color: #f1c40f;">🏢 Quản Lý Phòng</a>
                     <a class="nav-link" href="/admin/hoadon" style="color: #f1c40f;">💵 Quản Lý Hóa Đơn</a>
                     <a class="nav-link" href="/admin/yeucau" style="color: #f1c40f;">📩 Duyệt Yêu Cầu</a>
-                    
                     <a class="nav-link" href="/admin/tai-khoan" style="color: #f1c40f; background-color: #34495e; border-radius: 4px;">👥 Quản Lý Tài Khoản</a>
                 </div>
 
@@ -56,6 +56,7 @@
             </div>
         </div>
     </nav>
+
     <h2 style="text-align: center; color: #7f8c8d;">Danh sách phòng đang trống</h2>
 
     <table>
@@ -89,5 +90,32 @@
         </tbody>
     </table>
 
+	<div sec:authorize="hasRole('ADMIN')" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
+	    <a href="/admin/tro-chuyen/1" class="chat-bubble admin-bubble" title="Quản lý tin nhắn của khách">
+	        💬
+	    </a>
+	</div>
+	
+	<style>
+	    .chat-bubble {
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        width: 60px;
+	        height: 60px;
+	        background-color: #f1c40f; 
+	        color: white;
+	        font-size: 28px;
+	        border-radius: 50%;
+	        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	        text-decoration: none;
+	        transition: transform 0.3s ease;
+	        cursor: pointer;
+	    }
+	    .chat-bubble:hover {
+	        transform: scale(1.1);
+	        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	    }
+	</style>
 </body>
 </html>

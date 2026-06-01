@@ -53,6 +53,11 @@
                        th:text="${user.trangThai} ? '🔒 Khóa Tài Khoản' : '🔓 Mở Khóa'">
    						Thao tác
 					</a>
+					<a th:if="${user.vaiTro == 'USER'}" 
+                       th:href="@{/admin/tro-chuyen/{id}(id=${user.id})}" 
+                       style="background-color: #3498db; padding: 6px 12px; border-radius: 4px; text-decoration: none; color: white; font-weight: bold;">
+                       💬 Chat
+                    </a>
                 </td>
             </tr>
         </tbody>
