@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Quản Lý Tin Nhắn</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 900px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; height: 85vh; }
+        /* Cột trái: Danh sách khách */
+        .sidebar { width: 30%; border-right: 1px solid #ddd; display: flex; flex-direction: column; }
+        .sidebar-header { background-color: #2c3e50; color: white; padding: 15px; font-weight: bold; text-align: center; }
+        .user-list { flex: 1; overflow-y: auto; }
+        .user-item { padding: 15px; border-bottom: 1px solid #eee; display: block; text-decoration: none; color: #333; transition: 0.3s; }
+        .user-item:hover, .user-item.active { background-color: #ecf0f1; border-left: 4px solid #3498db; }
+        /* Cột phải: Khung chat */
+        .chat-area { width: 70%; display: flex; flex-direction: column; }
+        .chat-header { background-color: #3498db; color: white; padding: 15px; font-weight: bold; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; background-color: #e5ddd5; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 75%; padding: 10px 15px; border-radius: 15px; font-size: 14px; position: relative; }
+        .msg-me { background-color: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg-them { background-color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-input { display: flex; padding: 15px; background: #f0f0f0; }
+        .chat-input input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
+        .chat-input button { background-color: #3498db; color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" style="color: white; float: left; text-decoration: none;">⬅ Trang chủ</a>
+                Khách Thuê
+            </div>
+            <div class="user-list">
+                <a th:each="khach : ${danhSachKhach}" 
+                   th:if="${khach.vaiTro == 'USER'}"
+                   th:href="@{/admin/tro-chuyen/{id}(id=${khach.id})}" 
+                   th:class="'user-item ' + (${khachDangChat != null and khachDangChat.id == khach.id} ? 'active' : '')">
+                    👤 <strong th:text="${khach.hoVaTen}">Tên Khách</strong>
+                </a>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-header">
+                <span th:if="${khachDangChat != null}" th:text="'Trò chuyện với: ' + ${khachDangChat.hoVaTen}"></span>
+                <span th:if="${khachDangChat == null}">Vui lòng chọn một khách hàng bên trái</span>
+            </div>
+
+            <div class="chat-messages" id="chatBox">
+                <div th:if="${khachDangChat != null}" th:each="tin : ${lichSuChat}" 
+                     th:class="'msg ' + (${tin.maNguoiGui == myId} ? 'msg-me' : 'msg-them')">
+                    <span th:text="${tin.noiDung}">Nội dung</span>
+                </div>
+            </div>
+
+            <form th:if="${khachDangChat != null}" class="chat-input" th:action="@{/admin/tro-chuyen/gui}" method="post">
+                <input type="hidden" name="khachId" th:value="${khachDangChat.id}" />
+                <input type="text" name="noiDung" placeholder="Nhập câu trả lời..." required autocomplete="off" />
+                <button type="submit">Gửi</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var chatBox = document.getElementById("chatBox");
+        if(chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>

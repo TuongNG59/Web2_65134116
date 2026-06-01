@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trò chuyện với Chủ Trọ</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-container { width: 100%; max-width: 500px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 80vh; }
+        .chat-header { background-color: #3498db; color: white; padding: 15px; border-radius: 8px 8px 0 0; text-align: center; font-weight: bold; position: relative; }
+        .back-btn { position: absolute; left: 15px; color: white; text-decoration: none; font-weight: normal; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #e5ddd5; }
+        .msg { max-width: 75%; padding: 10px 15px; border-radius: 15px; font-size: 14px; line-height: 1.4; position: relative; }
+        .msg-me { background-color: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg-them { background-color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .time { font-size: 10px; color: #888; display: block; margin-top: 5px; text-align: right; }
+        .chat-input { display: flex; padding: 15px; background: #f0f0f0; border-radius: 0 0 8px 8px; }
+        .chat-input input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
+        .chat-input button { background-color: #3498db; color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <a href="/" class="back-btn">⬅ Trở về</a>
+            Trò chuyện với Admin
+        </div>
+
+        <div class="chat-messages" id="chatBox">
+            <div th:each="tin : ${lichSuChat}" 
+                 th:class="'msg ' + (${tin.maNguoiGui == myId} ? 'msg-me' : 'msg-them')">
+                <span th:text="${tin.noiDung}">Nội dung chat</span>
+                <span class="time" th:text="${#temporals.format(tin.thoiGian, 'HH:mm dd/MM')}">10:00</span>
+            </div>
+            <div th:if="${#lists.isEmpty(lichSuChat)}" style="text-align: center; color: #888; margin-top: 20px;">
+                Chưa có tin nhắn nào. Hãy gửi tin nhắn cho chủ trọ!
+            </div>
+        </div>
+
+        <form class="chat-input" th:action="@{/tro-chuyen/gui}" method="post">
+            <input type="text" name="noiDung" placeholder="Nhập tin nhắn..." required autocomplete="off" />
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+
+    <script>
+        var chatBox = document.getElementById("chatBox");
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>
