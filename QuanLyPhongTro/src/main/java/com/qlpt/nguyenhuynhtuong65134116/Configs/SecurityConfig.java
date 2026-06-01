@@ -15,7 +15,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Mở cửa cho Trang chủ, Đăng nhập, Đăng ký
-                .requestMatchers("/", "/dangnhap", "/dangky", "/kich-hoat", "/error").permitAll() 
+                .requestMatchers("/", "/dangnhap", "/dangky", "/kich-hoat", "/quen-mat-khau/**", "/error").permitAll() 
                 .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/thue-phong/**").authenticated()

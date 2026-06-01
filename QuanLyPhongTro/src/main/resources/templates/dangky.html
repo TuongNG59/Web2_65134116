@@ -14,7 +14,18 @@
 <body>
     <div class="form-container">
         <h2>Đăng Ký Khách Thuê</h2>
-        
+        <div style="text-align: center; margin-bottom: 15px;">
+    
+   		 <div th:if="${param.loi_trung_ten}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px; font-weight: bold; font-size: 14px;">
+        	❌ Tên đăng nhập này đã có người sử dụng. Vui lòng chọn tên khác!
+    	</div>
+
+    	<div th:if="${param.loi_trung_email}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px; font-weight: bold; font-size: 14px;">
+        	❌ Địa chỉ Email này đã được liên kết với một tài khoản khác!
+    	</div>
+
+		</div>
+		
         <form th:action="@{/dangky}" th:object="${nguoiDung}" method="post">
         	<input type="email" th:field="*{email}" placeholder="Địa chỉ Gmail cá nhân" required/>
             <input type="text" th:field="*{tenDangNhap}" placeholder="Tên đăng nhập" required />

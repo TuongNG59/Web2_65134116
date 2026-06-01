@@ -43,6 +43,16 @@ public class TaiKhoanController {
     public String xuLyDangKy(@ModelAttribute NguoiDung nguoiDung) {
     	// ... (Bên trong hàm xử lý Đăng Ký POST)
     	String matKhauMaHoa = passwordEncoder.encode(nguoiDung.getMatKhau());
+    	// KIỂM TRA TRÙNG TÊN ĐĂNG NHẬP
+    	if (nguoiDungService.findByTenDangNhap(nguoiDung.getTenDangNhap()).isPresent()) {
+            return "redirect:/dangky?loi_trung_ten";
+        }
+    	
+    	//KIỂM TRA TRÙNG EMAIL
+    	if (nguoiDungService.findByEmail(nguoiDung.getEmail()).isPresent()) {
+            return "redirect:/dangky?loi_trung_email";
+        }
+    	
         nguoiDung.setMatKhau(matKhauMaHoa);
         // 1. Sinh ra một mã Token ngẫu nhiên và gán cho người dùng
         String token = UUID.randomUUID().toString();
