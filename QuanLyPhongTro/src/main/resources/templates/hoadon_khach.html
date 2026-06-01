@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Hóa Đơn Của Tôi</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f7f6; }
+        h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #27ae60; color: white; }
+        .status-paid { color: #2ecc71; font-weight: bold; }
+        .status-unpaid { color: #e74c3c; font-weight: bold; }
+        .btn-pay { background-color: #e67e22; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .navbar { background-color: #2c3e50; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 5px; margin-bottom: 20px; }
+        .navbar-brand { color: white; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar-menu { display: flex; gap: 15px; align-items: center; }
+        .nav-link { color: #ecf0f1; text-decoration: none; font-weight: bold; padding: 8px 12px; border-radius: 4px; }
+        .btn-logout { background-color: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="/">🏠 Nhà Trọ Adou, đ/c: Ô 12, Lô 545, Đặng Thai Mai, Nam Nha Trang</a>
+        <div class="navbar-menu">
+            <a class="nav-link" href="/hoa-don-cua-toi" style="background-color: #34495e;">🧾 Hóa Đơn Của Tôi</a>
+            <span style="color: #1abc9c; font-weight: bold;">👤 <span sec:authentication="name"></span></span>
+            <form th:action="@{/dangxuat}" method="post" style="display: inline;">
+                <button type="submit" class="btn-logout">Đăng Xuất</button>
+            </form>
+        </div>
+    </nav>
+
+    <h2>HÓA ĐƠN TIỀN PHÒNG & ĐIỆN NƯỚC</h2>
+    <p>Khách hàng: <strong th:text="${tenKhach}"></strong></p>
+
+    <div th:if="${param.thanh_toan_thanh_cong}" style="background-color: #d4edda; color: #155724; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-weight: bold;">
+        🎉 Hệ thống đã ghi nhận yêu cầu thanh toán thành công!
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tháng/Năm</th>
+                <th>Phòng</th>
+                <th>Tổng Tiền</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="hd : ${danhSachHoaDon}">
+                <td th:text="${hd.thangNam}" style="font-weight: bold;"></td>
+                <td th:text="${hd.phongTro != null ? hd.phongTro.tenPhong : 'N/A'}"></td>
+                <td th:text="${#numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT')} + ' đ'" style="color: red; font-weight: bold;"></td>
+                <td>
+                    <span th:text="${hd.trangThaiThanhToan == 'CHUADONG' ? 'Chưa Thanh Toán' : 'Đã Thanh Toán'}"
+                          th:class="${hd.trangThaiThanhToan == 'CHUADONG' ? 'status-unpaid' : 'status-paid'}">
+                    </span>
+                </td>
+                <td>
+                    <a th:if="${hd.trangThaiThanhToan == 'CHUADONG'}" 
+                       th:href="@{/hoa-don/thanh-toan/{id}(id=${hd.id})}" class="btn-pay">Thanh Toán QR</a>
+                    <span th:if="${hd.trangThaiThanhToan != 'CHUADONG'}" style="color: #7f8c8d; font-style: italic;">Không có</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(danhSachHoaDon)}">
+                <td colspan="5" style="color: red; font-style: italic; padding: 20px;">Bạn hiện chưa có hóa đơn nào!</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

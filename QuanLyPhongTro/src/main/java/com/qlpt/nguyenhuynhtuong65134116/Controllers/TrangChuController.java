@@ -10,10 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung;
 import com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro;
 import com.qlpt.nguyenhuynhtuong65134116.Models.YeuCauThue;
+import com.qlpt.nguyenhuynhtuong65134116.Services.HoaDonService;
 import com.qlpt.nguyenhuynhtuong65134116.Services.NguoiDungService;
 import com.qlpt.nguyenhuynhtuong65134116.Services.PhongTroService;
 import com.qlpt.nguyenhuynhtuong65134116.Services.YeuCauThueService;
@@ -29,6 +31,9 @@ public class TrangChuController {
 
     @Autowired
     private NguoiDungService nguoiDungService;
+    
+    @Autowired
+    private HoaDonService hoaDonService;
 
     @GetMapping("/")
     public String xemTrangChu(Model model) {
@@ -63,5 +68,48 @@ public class TrangChuController {
         }
         
         return "redirect:/?gui_thanh_cong"; // Trả về trang chủ kèm thông báo thành công trên URL
+    }
+    
+    @GetMapping("/hoa-don/thanh-toan/{id}")
+    public String trangThanhToanQR(@PathVariable(value = "id") Long idHoaDon, Model model) {
+    	com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon hoaDon = hoaDonService.getHoaDonById(idHoaDon).orElse(null);
+        if (hoaDon != null) {
+            model.addAttribute("hoaDon", hoaDon);
+            return "thanh_toan_qr"; // Sẽ tạo file thanh_toan_qr.html
+        }
+        return "redirect:/hoa-don-cua-toi";
+    }
+    
+    @PostMapping("/hoa-don/xac-nhan-thanh-toan")
+    public String xacNhanThanhToan(@RequestParam("idHoaDon") Long idHoaDon) {
+    	com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon hoaDon = hoaDonService.getHoaDonById(idHoaDon).orElse(null);
+        if (hoaDon != null) {
+            // Cập nhật trạng thái thành ĐÃ ĐÓNG
+            hoaDon.setTrangThaiThanhToan("DADONG");
+            hoaDonService.taoHoacCapNhatHoaDon(hoaDon); // Lưu lại xuống MySQL
+        }
+        return "redirect:/hoa-don-cua-toi?thanh_toan_thanh_cong";
+    }
+    
+    @GetMapping("/hoa-don-cua-toi")
+    public String xemHoaDonCaNhan(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/dangnhap";
+        }
+        
+        // Tìm khách hàng đang đăng nhập
+        com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung khach = nguoiDungService.findByTenDangNhap(userDetails.getUsername()).orElse(null);
+        
+        if (khach != null) {
+            // Lọc ra toàn bộ hóa đơn thuộc về người khách này (lấy theo ID)
+            java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon> danhSachHoaDon = hoaDonService.getAllHoaDon().stream()
+                .filter(hd -> hd.getNguoiDung() != null && hd.getNguoiDung().getId().equals(khach.getId()))
+                .toList(); // Yêu cầu Java 16 trở lên. Nếu Eclipse báo lỗi chỗ toList(), đổi thành .collect(java.util.stream.Collectors.toList());
+            
+            model.addAttribute("danhSachHoaDon", danhSachHoaDon);
+            model.addAttribute("tenKhach", khach.getHoVaTen());
+        }
+        
+        return "hoadon_khach"; // Gọi đúng tên file hoadon_khach.html vừa tạo
     }
 }

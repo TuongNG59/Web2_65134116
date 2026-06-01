@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh Toán Hóa Đơn</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; text-align: center; padding: 40px; }
+        .qr-box { background: white; padding: 30px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0px 0px 10px #ccc; }
+        .qr-img { width: 220px; height: 220px; margin: 20px 0; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
+        .btn-confirm { width: 100%; padding: 12px; background-color: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .total-money { color: red; font-size: 22px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="qr-box">
+        <h2>QUÉT MÃ QR THANH TOÁN</h2>
+        <p>Hóa đơn tháng: <strong th:text="${hoaDon.thangNam}"></strong></p>
+        <p>Số tiền cần thanh toán:</p>
+        <p class="total-money" th:text="${#numbers.formatDecimal(hoaDon.tongTien, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></p>
+        
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=NhaTroAdouThanhToan" class="qr-img" alt="QR Code">
+        
+        <p style="font-size: 13px; color: #7f8c8d; font-style: italic; margin-bottom: 20px;">
+            (Vui lòng mở App Ngân hàng quét mã trên để chuyển khoản tự động)
+        </p>
+
+        <form th:action="@{/hoa-don/xac-nhan-thanh-toan}" method="post">
+            <input type="hidden" name="idHoaDon" th:value="${hoaDon.id}" />
+            <button type="submit" class="btn-confirm">✅ Xác Nhận Đã Chuyển Khoản</button>
+        </form>
+        
+        <p style="margin-top: 15px;"><a href="/hoa-don-cua-toi" style="color: #7f8c8d; text-decoration: none;">Quay lại</a></p>
+    </div>
+
+</body>
+</html>
