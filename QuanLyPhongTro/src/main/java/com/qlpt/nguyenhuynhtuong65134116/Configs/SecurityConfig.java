@@ -17,6 +17,7 @@ public class SecurityConfig {
                 // Mở cửa cho Trang chủ, Đăng nhập, Đăng ký
                 .requestMatchers("/", "/dangnhap", "/dangky", "/error").permitAll() 
                 .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
