@@ -35,7 +35,12 @@ public class HoaDonService {
     }
 
     // Logic Tự Động Tính Tiền và Lưu Hóa Đơn
-    public HoaDon taoHoacCapNhatHoaDon(HoaDon hoaDon) {
+    public HoaDon taoHoacCapNhatHoaDon(HoaDon hoaDon) {	
+    	// TỰ ĐỘNG NẠP GIÁ PHÒNG CƠ BẢN TỪ PHÒNG TRỌ VÀO HÓA ĐƠN
+        if (hoaDon.getPhongTro() != null) {
+            hoaDon.setTienPhong(hoaDon.getPhongTro().getGiaCoBan());
+        }
+        
         // 1. Tính tiền điện: (Số mới - Số cũ) * Đơn giá
         int luongDienTieuThu = hoaDon.getSoDienMoi() - hoaDon.getSoDienCu();
         if (luongDienTieuThu < 0) luongDienTieuThu = 0; // Tránh lỗi Admin nhập ngược số
