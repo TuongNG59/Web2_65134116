@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Quản Lý Hóa Đơn</title>
@@ -12,9 +13,47 @@
         table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
         th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
         th { background-color: #34495e; color: white; }
+        /* CSS cho thanh Menu điều hướng */
+        .navbar { background-color: #2c3e50; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 5px; margin-bottom: 20px; }
+        .navbar-brand { color: white; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar-menu { display: flex; gap: 15px; align-items: center; }
+        .nav-link { color: #ecf0f1; text-decoration: none; font-weight: bold; padding: 8px 12px; border-radius: 4px; transition: 0.3s; }
+        .nav-link:hover { background-color: #34495e; color: #3498db; }
+        .btn-logout { background-color: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
+	<nav class="navbar">
+        <a class="navbar-brand" href="/">🏠 Nhà Trọ Adou, đ/c: Ô 12, Lô 545, Đặng Thai Mai, Nam Nha Trang</a>
+        
+        <div class="navbar-menu">
+            <div sec:authorize="isAnonymous()" style="display: flex; gap: 10px;">
+                <a class="nav-link" href="/dangnhap">Đăng Nhập</a>
+                <a class="nav-link" href="/dangky" style="background-color: #2ecc71; color: white; border-radius: 4px;">Đăng Ký</a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()" style="display: flex; gap: 15px; align-items: center;">
+                
+                <div sec:authorize="hasRole('USER')" style="display: flex; gap: 10px;">
+                    <a class="nav-link" href="/hoa-don-cua-toi">🧾 Hóa Đơn Của Tôi</a>
+                </div>
+
+                <div sec:authorize="hasRole('ADMIN')" style="display: flex; gap: 10px;">
+                    <a class="nav-link" href="/admin/phong" style="color: #f1c40f;">🏢 Quản Lý Phòng</a>
+                    <a class="nav-link" href="/admin/hoadon" style="color: #f1c40f;">💵 Quản Lý Hóa Đơn</a>
+                    <a class="nav-link" href="/admin/yeucau" style="color: #f1c40f;">📩 Duyệt Yêu Cầu</a>
+                </div>
+
+                <span style="color: #1abc9c; font-weight: bold; margin-left: 10px;">
+                    👤 Xin chào, <span sec:authentication="name"></span>!
+                </span>
+                
+                <form th:action="@{/dangxuat}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-logout">Đăng Xuất</button>
+                </form>
+            </div>
+        </div>
+    </nav>
     <div class="header-box">
         <h2>TRANG QUẢN TRỊ - QUẢN LÝ HÓA ĐƠN ĐIỆN NƯỚC</h2>
         <a href="/admin/hoadon/them" class="btn btn-add">+ Lập Hóa Đơn Mới</a>

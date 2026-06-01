@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Lập Hóa Đơn</title>
@@ -11,6 +12,7 @@
     </style>
 </head>
 <body>
+
     <div class="form-box">
         <h2>LẬP HÓA ĐƠN TÍNH TIỀN</h2>
         <form th:action="@{/admin/hoadon/luu}" th:object="${hoaDon}" method="post">
