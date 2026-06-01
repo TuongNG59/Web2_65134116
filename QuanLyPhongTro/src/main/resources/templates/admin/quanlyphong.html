@@ -73,8 +73,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="phong : ${danhSachPhong}">
-                <td th:text="${phong.id}">1</td>
+            <tr th:each="phong, iterStat : ${danhSachPhong}">
+                <td th:text="${iterStat.count}">1</td>
                 <td th:text="${phong.tenPhong}" style="font-weight: bold;"></td>
                 <td th:text="${#numbers.formatDecimal(phong.giaCoBan, 0, 'COMMA', 0, 'POINT')}" style="color: red;"></td>
                 <td th:text="${phong.dienTich}"></td>

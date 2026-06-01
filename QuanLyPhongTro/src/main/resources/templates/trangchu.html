@@ -66,13 +66,8 @@
                 <th>Tên Phòng</th>
                 <th>Diện Tích</th>
                 <th>Giá Thuê / Tháng</th>
-				<th sec:authorize="!hasRole('ADMIN')">Thao tác</th>
-				
-				<td sec:authorize="!hasRole('ADMIN')">
-				    <form th:action="'/thue-phong/' + ${phong.id}" method="post">
-				        <button type="submit" class="btn-thue">Gửi Yêu Cầu Thuê</button>
-				    </form>
-				</td>
+                <th sec:authorize="!hasRole('ADMIN')">Thao tác</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -81,7 +76,7 @@
                 <td th:text="${phong.tenPhong}" style="font-weight: bold;">Phòng 101</td>
                 <td th:text="${phong.dienTich} + ' m²'">20 m²</td>
                 <td th:text="${#numbers.formatDecimal(phong.giaCoBan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'" style="color: red; font-weight: bold;">2,000,000 VNĐ</td>
-				<td>
+				<td sec:authorize="!hasRole('ADMIN')">
 				    <form th:action="'/thue-phong/' + ${phong.id}" method="post">
 				        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 				        
