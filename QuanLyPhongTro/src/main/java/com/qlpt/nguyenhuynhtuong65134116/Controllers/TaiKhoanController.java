@@ -61,6 +61,8 @@ public class TaiKhoanController {
         // 2. ÉP trạng thái thành false (Chưa kích hoạt) không cho đăng nhập ngay
         nguoiDung.setTrangThai(false); 
         
+        nguoiDung.setVaiTro("USER");
+        
         // Lưu xuống Database
         nguoiDungService.luuTaiKhoan(nguoiDung); 
 

@@ -71,10 +71,13 @@ public class NguoiDung {
 		this.phongTro = phongTro;
 	}
 
+    @Column(name = "token_kich_hoat")
     private String tokenKichHoat;
 
+    @Column(name = "maotp")
     private String maOTP;
 
+    @Column(name = "han_su_dungotp")
     private java.time.LocalDateTime hanSuDungOTP;
     
 	public Long getId() {
