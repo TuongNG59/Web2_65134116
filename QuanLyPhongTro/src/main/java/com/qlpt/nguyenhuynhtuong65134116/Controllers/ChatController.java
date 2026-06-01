@@ -28,7 +28,7 @@ public class ChatController {
     @GetMapping("/tro-chuyen")
     public String chatCuaKhach(Model model, Authentication authentication) {
         // Lấy thông tin khách đang đăng nhập
-        NguoiDung khachHang = nguoiDungService.findByTenDangNhap(authentication.getName());
+    	NguoiDung khachHang = nguoiDungService.findByTenDangNhap(authentication.getName()).orElse(null);
         
         model.addAttribute("lichSuChat", thongBaoService.getCuocTroChuyenVoiAdmin(khachHang.getId()));
         model.addAttribute("myId", khachHang.getId());
@@ -39,7 +39,7 @@ public class ChatController {
     // Khách nhấn gửi tin nhắn
     @PostMapping("/tro-chuyen/gui")
     public String khachGuiTin(@RequestParam("noiDung") String noiDung, Authentication authentication) {
-        NguoiDung khachHang = nguoiDungService.findByTenDangNhap(authentication.getName());
+    	NguoiDung khachHang = nguoiDungService.findByTenDangNhap(authentication.getName()).orElse(null);
         thongBaoService.guiTinNhan(khachHang.getId(), ADMIN_ID, noiDung);
         return "redirect:/tro-chuyen";
     }
