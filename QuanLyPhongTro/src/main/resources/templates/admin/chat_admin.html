@@ -19,6 +19,13 @@
         .msg { max-width: 75%; padding: 10px 15px; border-radius: 15px; font-size: 14px; position: relative; }
         .msg-me { background-color: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; }
         .msg-them { background-color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-time { 
+            font-size: 11px; 
+            color: #888; 
+            margin-top: 5px; 
+            text-align: right; 
+            display: block; 
+        }
         .chat-input { display: flex; padding: 15px; background: #f0f0f0; }
         .chat-input input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
         .chat-input button { background-color: #3498db; color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 20px; cursor: pointer; font-weight: bold; }
@@ -48,10 +55,14 @@
                 <span th:if="${khachDangChat == null}">Vui lòng chọn một khách hàng bên trái</span>
             </div>
 
-            <div class="chat-messages" id="chatBox">
+			<div class="chat-messages" id="chatBox">
                 <div th:if="${khachDangChat != null}" th:each="tin : ${lichSuChat}" 
                      th:class="'msg ' + (${tin.maNguoiGui == myId} ? 'msg-me' : 'msg-them')">
-                    <span th:text="${tin.noiDung}">Nội dung</span>
+                    
+                    <span th:text="${tin.noiDung}" style="display: block; margin-bottom: 3px;">Nội dung</span>
+                    
+                    <span class="msg-time" th:text="${#temporals.format(tin.thoiGian, 'HH:mm - dd/MM')}">10:00</span>
+                    
                 </div>
             </div>
 
