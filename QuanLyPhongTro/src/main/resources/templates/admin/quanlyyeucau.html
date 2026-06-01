@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Yêu Cầu Thuê</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #2980b9; color: white; }
+        .btn { padding: 6px 12px; text-decoration: none; border-radius: 4px; color: white; font-weight: bold; font-size: 14px; }
+        .btn-approve { background-color: #2ecc71; margin-right: 5px; }
+        .btn-reject { background-color: #e74c3c; }
+        .status { font-weight: bold; }
+        .status-choduyet { color: #f39c12; }
+        .status-daduyet { color: #2ecc71; }
+        .status-tuchoi { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <h2>TRANG QUẢN TRỊ - DUYỆT YÊU CẦU ĐẶT PHÒNG</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Khách Hàng</th>
+                <th>Số Điện Thoại</th>
+                <th>Phòng Muốn Thuê</th>
+                <th>Thời Gian Gửi</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="yc : ${danhSachYeuCau}">
+                <td th:text="${yc.id}"></td>
+                <td th:text="${yc.nguoiDung.hoVaTen}" style="font-weight: bold;"></td>
+                <td th:text="${yc.nguoiDung.soDienThoai}"></td>
+                <td th:text="${yc.phongTro.tenPhong}" style="color: #2980b9; font-weight: bold;"></td>
+                <td th:text="${#temporals.format(yc.thoiGian, 'dd-MM-yyyy HH:mm')}"></td>
+                <td>
+                    <span th:text="${yc.trangThai}" 
+                          th:class="'status ' + (${yc.trangThai == 'CHODUYET'} ? 'status-choduyet' : (${yc.trangThai == 'DADUYET'} ? 'status-daduyet' : 'status-tuchoi'))">
+                    </span>
+                </td>
+                <td>
+                    <div th:if="${yc.trangThai == 'CHODUYET'}">
+                        <a th:href="@{/admin/yeucau/duyet/{id}(id=${yc.id})}" class="btn btn-approve">Duyệt</a>
+                        <a th:href="@{/admin/yeucau/tuchoi/{id}(id=${yc.id})}" class="btn btn-reject" onclick="return confirm('Bạn có chắc chắn muốn từ chối yêu cầu này?')">Từ Chối</a>
+                    </div>
+                    <span th:if="${yc.trangThai != 'CHODUYET'}" style="color: #7f8c8d; font-style: italic;">Đã xử lý</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(danhSachYeuCau)}">
+                <td colspan="7" style="color: red; font-style: italic; padding: 20px;">Hiện tại chưa có yêu cầu thuê phòng nào!</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 20px;"><a href="/admin/phong">⬅️ Sang quản lý phòng</a> | <a href="/">➡️ Ra Trang Chủ</a></p>
+</body>
+</html>
