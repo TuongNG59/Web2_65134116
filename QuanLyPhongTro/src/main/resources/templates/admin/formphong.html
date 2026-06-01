@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhập Thông Tin Phòng Trọ</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 50px; }
+        .form-box { background: white; padding: 30px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0px 0px 10px #ccc; }
+        input, select { width: 95%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-submit { width: 100%; padding: 12px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2 th:text="${phongTro.id != null} ? 'CẬP NHẬT PHÒNG TRỌ' : 'THÊM PHÒNG TRỌ MỚI'"></h2>
+        
+        <form th:action="@{/admin/phong/luu}" th:object="${phongTro}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <label>Tên phòng:</label>
+            <input type="text" th:field="*{tenPhong}" placeholder="Ví dụ: Phòng 101" required />
+
+            <label>Giá thuê cơ bản (VNĐ):</label>
+            <input type="number" th:field="*{giaCoBan}" placeholder="Ví dụ: 2500000" required />
+
+            <label>Diện tích (m²):</label>
+            <input type="number" step="0.1" th:field="*{dienTich}" placeholder="Ví dụ: 22.5" required />
+
+            <div th:if="${phongTro.id != null}">
+                <label>Trạng thái phòng:</label>
+                <select th:field="*{trangThai}">
+                    <option value="TRONG">Còn Trống</option>
+                    <option value="DANGTHUE">Đang Cho Thuê</option>
+                    <option value="BAOTRI">Đang Bảo Trì</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Lưu Dữ Liệu</button>
+        </form>
+        <p style="text-align: center;"><a href="/admin/phong">Hủy bỏ và quay lại</a></p>
+    </div>
+</body>
+</html>

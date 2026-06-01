@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Quản Lý Phòng Trọ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; }
+        .header-box { display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 10px 15px; text-decoration: none; border-radius: 5px; color: white; font-weight: bold; }
+        .btn-add { background-color: #2ecc71; }
+        .btn-edit { background-color: #f1c40f; margin-right: 5px; }
+        .btn-delete { background-color: #e74c3c; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #2c3e50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header-box">
+        <h2>TRANG QUẢN TRỊ - DANH SÁCH PHÒNG TRỌ</h2>
+        <a href="/admin/phong/them" class="btn btn-add">+ Thêm Phòng Mới</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Phòng</th>
+                <th>Giá Cơ Bản (VNĐ)</th>
+                <th>Diện Tích (m²)</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="phong : ${danhSachPhong}">
+                <td th:text="${phong.id}">1</td>
+                <td th:text="${phong.tenPhong}" style="font-weight: bold;"></td>
+                <td th:text="${#numbers.formatDecimal(phong.giaCoBan, 0, 'COMMA', 0, 'POINT')}" style="color: red;"></td>
+                <td th:text="${phong.dienTich}"></td>
+                <td th:text="${phong.trangThai}"></td>
+                <td>
+                    <a th:href="@{/admin/phong/sua/{id}(id=${phong.id})}" class="btn btn-edit">Sửa</a>
+                    <a th:href="@{/admin/phong/xoa/{id}(id=${phong.id})}" class="btn btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa phòng này?')">Xóa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top: 20px;"><a href="/">➡️ Quay lại Trang Chủ</a></p>
+</body>
+</html>
