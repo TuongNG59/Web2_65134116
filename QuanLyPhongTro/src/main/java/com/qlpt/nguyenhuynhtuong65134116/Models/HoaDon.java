@@ -65,7 +65,10 @@ public class HoaDon {
 
     @Column(name = "anhchuyenkhoan")
     private String anhChuyenKhoan;
-
+    @jakarta.persistence.Lob
+    @jakarta.persistence.Column(columnDefinition = "LONGTEXT")
+    private String minhChung;
+    
     public HoaDon() {
     }
 
@@ -219,5 +222,11 @@ public class HoaDon {
 		this.anhChuyenKhoan = anhChuyenKhoan;
 	}
 
-    
+	public String getMinhChung() {
+        return minhChung;
+    }
+
+    public void setMinhChung(String minhChung) {
+        this.minhChung = minhChung;
+    }
 }

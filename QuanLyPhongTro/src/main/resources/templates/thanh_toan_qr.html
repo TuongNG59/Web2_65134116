@@ -25,8 +25,14 @@
             (Vui lòng mở App Ngân hàng quét mã trên để chuyển khoản tự động)
         </p>
 
-        <form th:action="@{/hoa-don/xac-nhan-thanh-toan}" method="post">
+		<form th:action="@{/hoa-don/xac-nhan-thanh-toan}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="idHoaDon" th:value="${hoaDon.id}" />
+            
+            <div style="text-align: left; margin-bottom: 15px; margin-top: 10px;">
+                <label style="font-weight: bold; color: #34495e;">Đính kèm ảnh minh chứng:</label>
+                <input type="file" name="fileMinhChung" accept="image/*" required style="width: 100%; padding: 8px; border: 1px dashed #ccc; margin-top: 5px;" />
+            </div>
+
             <button type="submit" class="btn-confirm">✅ Xác Nhận Đã Chuyển Khoản</button>
         </form>
         

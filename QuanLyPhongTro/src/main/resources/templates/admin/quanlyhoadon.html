@@ -82,7 +82,17 @@
                 <td th:text="${#numbers.formatDecimal(hd.tienDien, 0, 'COMMA', 0, 'POINT')}"></td>
                 <td th:text="${#numbers.formatDecimal(hd.tienNuoc, 0, 'COMMA', 0, 'POINT')}"></td>
                 <td th:text="${#numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT')}" style="color: red; font-weight: bold;"></td>
-                <td th:text="${hd.trangThaiThanhToan}"></td>
+				<td>
+                    <a href="#" class="status-link"
+                       th:data-ten="${hd.nguoiDung != null ? hd.nguoiDung.hoVaTen : 'Khách vãng lai'}"
+                       th:data-thang="${hd.thangNam}"
+                       th:data-trangthai="${hd.trangThaiThanhToan}"
+                       th:data-minhchung="${hd.minhChung}"
+                       onclick="hienThiModal(this)"
+                       th:text="${hd.trangThaiThanhToan == 'CHUADONG' ? 'Chưa Thanh Toán' : 'Đã Thanh Toán'}"
+                       th:style="${hd.trangThaiThanhToan == 'CHUADONG' ? 'color: #e74c3c; font-weight: bold; text-decoration: underline;' : 'color: #2ecc71; font-weight: bold; text-decoration: underline;'}">
+                    </a>
+                </td>
                 <td>
                 	<a th:href="@{/admin/hoadon/sua/{id}(id=${hd.id})}" class="btn" style="background-color: #f1c40f; padding: 5px 10px; margin-right: 5px;">Sửa</a>
                     <a th:href="@{/admin/hoadon/xoa/{id}(id=${hd.id})}" class="btn btn-delete" onclick="return confirm('Xóa hóa đơn này?')">Xóa</a>
@@ -91,5 +101,61 @@
         </tbody>
     </table>
     <p style="margin-top: 20px;"><a href="/admin/phong">⬅️ Sang quản lý phòng</a> | <a href="/">➡️ Ra Trang Chủ</a></p>
+    <div id="modalChiTiet" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8);">
+        <div style="background-color:#fff; margin:5% auto; padding:25px; width:40%; min-width: 400px; border-radius:8px; position:relative; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            
+            <span onclick="dongModal()" style="position:absolute; top:15px; right:25px; font-size:28px; cursor:pointer; color:#c0392b; font-weight:bold;">&times;</span>
+            
+            <h3 style="text-align: center; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">THÔNG TIN THANH TOÁN</h3>
+            
+            <p style="font-size: 16px;">👤 <strong>Người thuê:</strong> <span id="md-ten" style="color: #2980b9; font-weight: bold;"></span></p>
+            <p style="font-size: 16px;">🗓️ <strong>Kỳ hóa đơn:</strong> <span id="md-thang"></span></p>
+            <p style="font-size: 16px;">📌 <strong>Trạng thái:</strong> <span id="md-trangthai"></span></p>
+            
+            <div id="md-vung-anh" style="display:none; margin-top:20px; text-align: center;">
+                <p style="font-weight: bold; text-align: left;">📸 Ảnh minh chứng giao dịch:</p>
+                <img id="md-anh" src="" style="max-width:100%; max-height:350px; border:2px solid #bdc3c7; border-radius:5px; padding: 5px;"/>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function hienThiModal(element) {
+            // 1. Lấy dữ liệu đã giấu trong thẻ a
+            var ten = element.getAttribute('data-ten');
+            var thang = element.getAttribute('data-thang');
+            var trangThai = element.getAttribute('data-trangthai');
+            var minhChung = element.getAttribute('data-minhchung');
+
+            // 2. Bơm dữ liệu vào Modal
+            document.getElementById('md-ten').innerText = ten;
+            document.getElementById('md-thang').innerText = thang;
+
+            // Xử lý hiển thị theo trạng thái
+            if (trangThai === 'CHUADONG') {
+                document.getElementById('md-trangthai').innerText = "Chưa đóng (Đang trễ hạn hoặc chờ thanh toán)";
+                document.getElementById('md-trangthai').style.color = "red";
+                document.getElementById('md-vung-anh').style.display = "none"; // Giấu vùng ảnh đi
+            } else {
+                document.getElementById('md-trangthai').innerText = "Đã hoàn tất thanh toán";
+                document.getElementById('md-trangthai').style.color = "green";
+                
+                // Nếu có ảnh Base64 thì hiện lên
+                if (minhChung && minhChung !== 'null' && minhChung !== '') {
+                    document.getElementById('md-anh').src = minhChung;
+                    document.getElementById('md-vung-anh').style.display = "block";
+                } else {
+                    document.getElementById('md-vung-anh').style.display = "none";
+                }
+            }
+
+            // 3. Hiển thị Modal lên giữa màn hình
+            document.getElementById('modalChiTiet').style.display = "block";
+        }
+
+        function dongModal() {
+            document.getElementById('modalChiTiet').style.display = "none";
+        }
+    </script>
 </body>
 </html>

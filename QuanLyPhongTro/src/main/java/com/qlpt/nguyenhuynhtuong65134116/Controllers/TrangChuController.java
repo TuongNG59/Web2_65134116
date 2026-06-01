@@ -1,5 +1,6 @@
 package com.qlpt.nguyenhuynhtuong65134116.Controllers;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon;
 import com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung;
 import com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro;
 import com.qlpt.nguyenhuynhtuong65134116.Models.YeuCauThue;
@@ -81,12 +84,24 @@ public class TrangChuController {
     }
     
     @PostMapping("/hoa-don/xac-nhan-thanh-toan")
-    public String xacNhanThanhToan(@RequestParam("idHoaDon") Long idHoaDon) {
-    	com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon hoaDon = hoaDonService.getHoaDonById(idHoaDon).orElse(null);
+    public String xacNhanThanhToan(@RequestParam("idHoaDon") Long idHoaDon, 
+                                   @RequestParam("fileMinhChung") MultipartFile fileMinhChung) {
+        
+        HoaDon hoaDon = hoaDonService.getHoaDonById(idHoaDon).orElse(null);
         if (hoaDon != null) {
-            // Cập nhật trạng thái thành ĐÃ ĐÓNG
+            // Xử lý file ảnh: Biến nó thành chuỗi Base64
+            if (!fileMinhChung.isEmpty()) {
+                try {
+                    String base64Image = Base64.getEncoder().encodeToString(fileMinhChung.getBytes());
+                    // Đính thêm tiền tố để HTML hiểu đây là ảnh JPEG/PNG
+                    hoaDon.setMinhChung("data:image/jpeg;base64," + base64Image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            
             hoaDon.setTrangThaiThanhToan("DADONG");
-            hoaDonService.taoHoacCapNhatHoaDon(hoaDon); // Lưu lại xuống MySQL
+            hoaDonService.taoHoacCapNhatHoaDon(hoaDon);
         }
         return "redirect:/hoa-don-cua-toi?thanh_toan_thanh_cong";
     }
