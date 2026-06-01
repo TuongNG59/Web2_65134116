@@ -28,14 +28,18 @@
     	</div>
 
     	<div th:if="${param.kich_hoat_that_bai}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px; font-weight: bold;">
-        ❌ Link kích hoạt không hợp lệ hoặc đã được sử dụng!
+        	❌ Link kích hoạt không hợp lệ hoặc đã được sử dụng!
     	</div>
-
+		
+		<div th:if="${param.doi_mat_khau_thanh_cong}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
+    		🔑 Đổi mật khẩu thành công! Hãy đăng nhập bằng mật khẩu mới của bạn.
+		</div>
 		</div>
         <form th:action="@{/xuly-dangnhap}" method="post">
             <input type="text" name="username" placeholder="Tên đăng nhập" required />
             <input type="password" name="password" placeholder="Mật khẩu" required />
             <button type="submit">Đăng Nhập</button>
+            <a th:href="@{/quen-mat-khau}" style="display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 14px;">Quên mật khẩu?</a>
         </form>
         <p>Chưa có tài khoản? <a href="/dangky">Đăng ký ngay</a></p>
     </div>

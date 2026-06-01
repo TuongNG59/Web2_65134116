@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quên Mật Khẩu - Nhà Trọ Adou</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box;">
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Quên Mật Khẩu</h2>
+        <p style="color: #666; font-size: 14px; text-align: center; margin-bottom: 20px;">Nhập Email tài khoản của bạn để nhận mã OTP xác thực.</p>
+
+        <div th:if="${param.loi_email_khong_ton_tai}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 4px; text-align: center; margin-bottom: 15px; font-size: 14px; font-weight: bold;">
+            ❌ Email này không tồn tại trên hệ thống!
+        </div>
+        
+        <div th:if="${param.loi_otp}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 4px; text-align: center; margin-bottom: 15px; font-size: 14px; font-weight: bold;">
+            ❌ Mã OTP sai hoặc đã hết hạn sử dụng! Vui lòng thử lại.
+        </div>
+
+        <form th:action="@{/quen-mat-khau/gui-otp}" method="post">
+            <div style="margin-bottom: 20px;">
+                <input type="email" name="email" placeholder="Nhập địa chỉ Gmail của bạn" required 
+                       style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;"/>
+            </div>
+            <button type="submit" style="width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer;">
+                Gửi mã OTP qua Gmail
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/dangnhap}" style="color: #007bff; text-decoration: none; font-size: 14px;">Quay lại đăng nhập</a>
+        </div>
+    </div>
+
+</body>
+</html>

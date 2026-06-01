@@ -79,5 +79,10 @@ public class NguoiDungService {
     public java.util.Optional<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> findByTokenKichHoat(String token) {
         return nguoiDungRepository.findByTokenKichHoat(token);
     }
-
+    
+ // Hàm tìm người dùng bằng Email cho tính năng Quên mật khẩu
+    public java.util.Optional<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> findByEmail1(String email) {
+        // Hàm này gọi xuống NguoiDungRepository
+        return nguoiDungRepository.findByEmail(email);
+    }
 }
