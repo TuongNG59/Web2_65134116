@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Hóa Đơn</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; }
+        .header-box { display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 10px 15px; text-decoration: none; border-radius: 5px; color: white; font-weight: bold; }
+        .btn-add { background-color: #9b59b6; }
+        .btn-delete { background-color: #e74c3c; padding: 5px 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #34495e; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header-box">
+        <h2>TRANG QUẢN TRỊ - QUẢN LÝ HÓA ĐƠN ĐIỆN NƯỚC</h2>
+        <a href="/admin/hoadon/them" class="btn btn-add">+ Lập Hóa Đơn Mới</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Phòng</th>
+                <th>Khách Thuê</th>
+                <th>Tháng/Năm</th>
+                <th>Tiền Phòng</th>
+                <th>Tiền Điện</th>
+                <th>Tiền Nước</th>
+                <th>Tổng Tiền (VNĐ)</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="hd : ${danhSachHoaDon}">
+                <td th:text="${hd.phongTro != null ? hd.phongTro.tenPhong : 'N/A'}" style="font-weight: bold;"></td>
+                <td th:text="${hd.nguoiDung != null ? hd.nguoiDung.hoVaTen : 'N/A'}"></td>
+                <td th:text="${hd.thangNam}"></td>
+                <td th:text="${#numbers.formatDecimal(hd.tienPhong, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal(hd.tienDien, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal(hd.tienNuoc, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT')}" style="color: red; font-weight: bold;"></td>
+                <td th:text="${hd.trangThaiThanhToan}"></td>
+                <td>
+                    <a th:href="@{/admin/hoadon/xoa/{id}(id=${hd.id})}" class="btn btn-delete" onclick="return confirm('Xóa hóa đơn này?')">Xóa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top: 20px;"><a href="/admin/phong">⬅️ Sang quản lý phòng</a> | <a href="/">➡️ Ra Trang Chủ</a></p>
+</body>
+</html>

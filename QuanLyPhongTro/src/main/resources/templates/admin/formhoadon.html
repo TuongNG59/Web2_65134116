@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lập Hóa Đơn</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px; }
+        .form-box { background: white; padding: 30px; max-width: 450px; margin: auto; border-radius: 8px; box-shadow: 0px 0px 10px #ccc; }
+        input, select { width: 95%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-submit { width: 100%; padding: 12px; background-color: #9b59b6; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2>LẬP HÓA ĐƠN TÍNH TIỀN</h2>
+        <form th:action="@{/admin/hoadon/luu}" th:object="${hoaDon}" method="post">
+            
+            <label>Chọn phòng trọ:</label>
+            <select th:field="*{phongTro.id}" required>
+                <option th:each="p : ${danhSachPhong}" th:value="${p.id}" th:text="${p.tenPhong}"></option>
+            </select>
+
+            <label>Chọn khách thuê nhận hóa đơn:</label>
+            <select th:field="*{nguoiDung.id}" required>
+                <option th:each="u : ${danhSachUser}" th:value="${u.id}" th:text="${u.hoVaTen}"></option>
+            </select>
+
+            <label>Tháng / Năm:</label>
+            <input type="text" th:field="*{thangNam}" placeholder="Ví dụ: 06/2026" required />
+
+            <label>Tiền phòng cơ bản (VNĐ):</label>
+            <input type="number" th:field="*{tienPhong}" placeholder="Ví dụ: 2000000" required />
+
+            <label>Số điện cũ - Số điện mới:</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" th:field="*{soDienCu}" placeholder="Số cũ" required />
+                <input type="number" th:field="*{soDienMoi}" placeholder="Số mới" required />
+            </div>
+
+            <label>Số nước cũ - Số nước mới:</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" th:field="*{soNuocCu}" placeholder="Số cũ" required />
+                <input type="number" th:field="*{soNuocMoi}" placeholder="Số mới" required />
+            </div>
+
+            <label>Chi phí khác (Wifi, rác... nếu có):</label>
+            <input type="number" th:field="*{phiKhac}" placeholder="Ví dụ: 150000" />
+
+            <button type="submit" class="btn-submit">Tính Toán & Xuất Hóa Đơn</button>
+        </form>
+        <p style="text-align: center;"><a href="/admin/hoadon">Hủy bỏ và quay lại</a></p>
+    </div>
+</body>
+</html>
