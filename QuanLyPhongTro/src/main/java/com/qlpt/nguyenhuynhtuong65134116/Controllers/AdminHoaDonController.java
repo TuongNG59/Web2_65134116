@@ -39,7 +39,13 @@ public class AdminHoaDonController {
     public String formLapHoaDon(Model model) {
         model.addAttribute("hoaDon", new HoaDon());
         model.addAttribute("danhSachPhong", phongTroService.getAllPhongTro());
-        model.addAttribute("danhSachUser", nguoiDungService.getAllNguoiDung());
+        
+        // CHỈ LẤY NHỮNG KHÁCH CÓ VAI TRÒ "USER" VÀ ĐANG THUÊ PHÒNG (phongTro != null)
+        java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> khachDangThue = nguoiDungService.layTatCaNguoiDung().stream()
+            .filter(u -> "USER".equals(u.getVaiTro()) && u.getPhongTro() != null)
+            .collect(java.util.stream.Collectors.toList());
+            
+        model.addAttribute("danhSachUser", khachDangThue); // Đẩy danh sách đã lọc lên
         return "admin/formhoadon";
     }
 
