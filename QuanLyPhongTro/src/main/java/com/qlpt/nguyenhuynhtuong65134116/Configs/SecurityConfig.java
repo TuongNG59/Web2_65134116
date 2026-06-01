@@ -30,7 +30,12 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/") // Đăng xuất xong về Trang chủ
                 .permitAll()
             );
-
+        	
         return http.build();
+    }
+    
+    @Bean
+    public org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder passwordEncoder() {
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 }
