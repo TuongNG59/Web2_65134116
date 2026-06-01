@@ -46,14 +46,14 @@ public class AdminController {
 
     // 4. Mở form sửa thông tin phòng
     @GetMapping("/phong/sua/{id}")
-    public String formSuaPhong(@PathVariable Long id, Model model) {
+    public String formSuaPhong(@PathVariable(value = "id") Long id, Model model) {
         phongTroService.getPhongTroById(id).ifPresent(phong -> model.addAttribute("phongTro", phong));
         return "admin/formphong";
     }
 
     // 5. Xóa phòng
     @GetMapping("/phong/xoa/{id}")
-    public String xoaPhong(@PathVariable Long id) {
+    public String xoaPhong(@PathVariable(value = "id") Long id) {
         phongTroService.deletePhongTro(id);
         return "redirect:/admin/phong";
     }
