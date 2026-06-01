@@ -95,4 +95,39 @@ public class TaiKhoanController {
         
         return "redirect:/dangnhap?kich_hoat_that_bai";
     }
+    
+    // 1. Hiển thị trang thông tin cá nhân
+    @GetMapping("/tai-khoan")
+    public String thongTinTaiKhoan(Model model, @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        // Lấy tên đăng nhập của người đang đăng nhập hiện tại
+        String tenDangNhap = userDetails.getUsername();
+        
+        // Tìm thông tin đầy đủ của người đó dưới database
+        NguoiDung user = nguoiDungService.findByTenDangNhap(tenDangNhap).orElse(null);
+        
+        model.addAttribute("user", user);
+        return "thong_tin_ca_nhan"; // Trả về file thong_tin_ca_nhan.html
+    }
+
+    // 2. Xử lý khi người dùng bấm nút "Cập nhật thông tin"
+    @PostMapping("/tai-khoan/cap-nhat")
+    public String capNhatTaiKhoan(@ModelAttribute("user") NguoiDung thongTinMoi, 
+                                  @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        
+        String tenDangNhap = userDetails.getUsername();
+        NguoiDung userTrongDb = nguoiDungService.findByTenDangNhap(tenDangNhap).orElse(null);
+        
+        if (userTrongDb != null) {
+            // Chỉ cho phép sửa các trường thông tin cơ bản, không sửa Tên đăng nhập và Mật khẩu ở đây
+            userTrongDb.setHoVaTen(thongTinMoi.getHoVaTen());
+            userTrongDb.setSoDienThoai(thongTinMoi.getSoDienThoai());
+            userTrongDb.setCccd(thongTinMoi.getCccd());
+            userTrongDb.setEmail(thongTinMoi.getEmail());
+            
+            nguoiDungService.capNhatThongTin(userTrongDb); // Lưu lại vào DB
+            return "redirect:/tai-khoan?cap_nhat_thanh_cong";
+        }
+        
+        return "redirect:/tai-khoan?loi_he_thong";
+    }
 }

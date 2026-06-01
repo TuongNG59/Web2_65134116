@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông Tin Cá Nhân - Nhà Trọ Adou</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 40px;">
+
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto;">
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Thông Tin Cá Nhân</h2>
+
+        <div th:if="${param.cap_nhat_thanh_cong}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 4px; text-align: center; margin-bottom: 15px; font-weight: bold;">
+            ✅ Cập nhật thông tin tài khoản thành công!
+        </div>
+
+        <form th:action="@{/tai-khoan/cap-nhat}" th:object="${user}" method="post">
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Tên đăng nhập (Không thể thay đổi):</label>
+                <input type="text" th:field="*{tenDangNhap}" readonly style="width: 100%; padding: 10px; background-color: #e9ecef; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Họ và tên:</label>
+                <input type="text" th:field="*{hoVaTen}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Số điện thoại:</label>
+                <input type="text" th:field="*{soDienThoai}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Số CCCD:</label>
+                <input type="text" th:field="*{cccd}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Địa chỉ Email:</label>
+                <input type="email" th:field="*{email}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+            </div>
+
+            <button type="submit" style="width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer;">
+                Lưu thay đổi
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/}" style="color: #666; text-decoration: none; font-size: 14px;">⬅ Quay lại trang chủ</a>
+        </div>
+    </div>
+
+</body>
+</html>
