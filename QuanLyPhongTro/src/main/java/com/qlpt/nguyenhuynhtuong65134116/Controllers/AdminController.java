@@ -1,6 +1,8 @@
 package com.qlpt.nguyenhuynhtuong65134116.Controllers;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,10 @@ public class AdminController {
     // 1. Trang quản lý danh sách phòng trọ
     @GetMapping("/phong")
     public String quanLyPhong(Model model) {
+    	List<PhongTro> danhSachPhong = phongTroService.getAllPhongTro();
+    	
         model.addAttribute("danhSachPhong", phongTroService.getAllPhongTro());
+        model.addAttribute("phongTroService", phongTroService);
         return "admin/quanlyphong";
     }
 

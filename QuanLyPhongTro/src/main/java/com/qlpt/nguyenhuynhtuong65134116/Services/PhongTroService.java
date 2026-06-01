@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung;
 import com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro;
+import com.qlpt.nguyenhuynhtuong65134116.Repositories.NguoiDungRepository;
 import com.qlpt.nguyenhuynhtuong65134116.Repositories.PhongTroRepository;
 
 @Service
@@ -14,6 +16,9 @@ public class PhongTroService {
 
     @Autowired
     private PhongTroRepository phongTroRepository;
+    
+    @Autowired
+    private NguoiDungRepository nguoiDungRepository;
 
     // Lấy toàn bộ danh sách phòng trọ
     public List<PhongTro> getAllPhongTro() {
@@ -46,5 +51,15 @@ public class PhongTroService {
             phong.setTrangThai(trangThaiMoi);
             phongTroRepository.save(phong);
         });
+    }
+    
+    // HÀM MỚI THÊM: Tìm tên người thuê dựa vào phòng
+    public String getTenNguoiThue(Long idPhong) {
+        // Xuống DB tìm xem có User nào đang có phong_tro_id trùng với idPhong không
+        return nguoiDungRepository.findAll().stream()
+            .filter(user -> user.getPhongTro() != null && user.getPhongTro().getId().equals(idPhong))
+            .map(NguoiDung::getHoVaTen)
+            .findFirst()
+            .orElse("Chưa có"); // Nếu không có ai thuê thì hiện "Chưa có"
     }
 }

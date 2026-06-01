@@ -45,6 +45,16 @@ public class YeuCauThueService {
                 // 2. Gắn căn phòng đó vào thông tin của người dùng vừa duyệt
                 yeuCau.getNguoiDung().setPhongTro(yeuCau.getPhongTro());
                 nguoiDungService.capNhatThongTin(yeuCau.getNguoiDung());
+                
+                // 3. Nếu Model PhongTro của cậu có trường giữ thông tin NguoiDung (khách thuê), 
+                // thì cậu nên bổ sung thêm dòng dưới đây để lưu quan hệ ngược lại:
+                // yeuCau.getPhongTro().setNguoiDung(yeuCau.getNguoiDung());
+                // phongTroService.savePhongTro(yeuCau.getPhongTro());
+            } 
+            // THÊM NHÁNH NÀY: Nếu Admin bấm 'TUCHOI'
+            else if ("TUCHOI".equals(trangThaiMoi)) {
+                // Đảm bảo phòng trọ quay về trạng thái TRONG để khách khác có thể nhìn thấy và thuê
+                phongTroService.capNhatTrangThai(yeuCau.getPhongTro().getId(), "TRONG");
             }
         });
     }
