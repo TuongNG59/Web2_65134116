@@ -15,6 +15,7 @@
         <h2>LẬP HÓA ĐƠN TÍNH TIỀN</h2>
         <form th:action="@{/admin/hoadon/luu}" th:object="${hoaDon}" method="post">
             
+            <input type="hidden" th:field="*{id}" />
             <label>Chọn phòng trọ:</label>
             <select th:field="*{phongTro.id}" required>
                 <option th:each="p : ${danhSachPhong}" th:value="${p.id}" th:text="${p.tenPhong}"></option>

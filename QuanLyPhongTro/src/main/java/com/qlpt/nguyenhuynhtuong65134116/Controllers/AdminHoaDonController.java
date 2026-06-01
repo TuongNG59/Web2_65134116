@@ -56,4 +56,15 @@ public class AdminHoaDonController {
         hoaDonService.deleteHoaDon(id);
         return "redirect:/admin/hoadon";
     }
+    
+    // 5. Sửa hoá đơn
+    @GetMapping("/sua/{id}")
+    public String formSuaHoaDon(@PathVariable(value = "id") Long id, Model model) {
+        hoaDonService.getHoaDonById(id).ifPresent(hd -> model.addAttribute("hoaDon", hd));
+        
+        model.addAttribute("danhSachPhong", phongTroService.getAllPhongTro());
+        model.addAttribute("danhSachUser", nguoiDungService.getAllNguoiDung());
+        
+        return "admin/formhoadon"; 
+    }
 }

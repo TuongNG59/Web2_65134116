@@ -45,6 +45,7 @@
                 <td th:text="${#numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT')}" style="color: red; font-weight: bold;"></td>
                 <td th:text="${hd.trangThaiThanhToan}"></td>
                 <td>
+                	<a th:href="@{/admin/hoadon/sua/{id}(id=${hd.id})}" class="btn" style="background-color: #f1c40f; padding: 5px 10px; margin-right: 5px;">Sửa</a>
                     <a th:href="@{/admin/hoadon/xoa/{id}(id=${hd.id})}" class="btn btn-delete" onclick="return confirm('Xóa hóa đơn này?')">Xóa</a>
                 </td>
             </tr>
