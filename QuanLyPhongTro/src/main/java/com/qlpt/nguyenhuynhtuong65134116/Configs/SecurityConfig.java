@@ -15,7 +15,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Mở cửa cho Trang chủ, Đăng nhập, Đăng ký
-                .requestMatchers("/", "/dangnhap", "/dangky").permitAll() 
+                .requestMatchers("/", "/dangnhap", "/dangky", "/error").permitAll() 
+                .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
