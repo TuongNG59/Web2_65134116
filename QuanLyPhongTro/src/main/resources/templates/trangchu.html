@@ -33,9 +33,13 @@
                 <td th:text="${phong.tenPhong}" style="font-weight: bold;">Phòng 101</td>
                 <td th:text="${phong.dienTich} + ' m²'">20 m²</td>
                 <td th:text="${#numbers.formatDecimal(phong.giaCoBan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'" style="color: red; font-weight: bold;">2,000,000 VNĐ</td>
-                <td>
-                    <button class="btn-thue">Gửi Yêu Cầu Thuê</button>
-                </td>
+				<td>
+				    <form th:action="'/thue-phong/' + ${phong.id}" method="post">
+				        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				        
+				        <button type="submit" class="btn-thue">Gửi Yêu Cầu Thuê</button>
+				    </form>
+				</td>
             </tr>
             
             <tr th:if="${#lists.isEmpty(danhSachPhong)}">
