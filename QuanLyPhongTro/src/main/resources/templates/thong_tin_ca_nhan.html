@@ -13,7 +13,7 @@
             ✅ Cập nhật thông tin tài khoản thành công!
         </div>
 
-        <form th:action="@{/tai-khoan/cap-nhat}" th:object="${user}" method="post">
+        <form th:action="@{/tai-khoan/cap-nhat}" th:object="${user}" method="post" enctype="multipart/form-data">
             
             <div style="margin-bottom: 15px;">
                 <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Tên đăng nhập (Không thể thay đổi):</label>
@@ -30,11 +30,34 @@
                 <input type="text" th:field="*{soDienThoai}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
             </div>
 
+			<div style="margin-bottom: 15px;">
+		        <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Địa chỉ thường trú:</label>
+		        <input type="text" th:field="*{diaChi}" placeholder="Nhập địa chỉ của bạn" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
+		    </div>
+		    
             <div style="margin-bottom: 15px;">
                 <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Số CCCD:</label>
                 <input type="text" th:field="*{cccd}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>
             </div>
 
+			<div style="margin-bottom: 15px;">
+        		<label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Ảnh CCCD Mặt trước:</label>
+        		<input type="file" name="fileTruoc" accept="image/*" style="width: 100%; padding: 5px; box-sizing: border-box;"/>
+        		<div th:if="*{anhCccdTruoc}" style="margin-top: 10px;">
+            		<p style="font-size: 12px; color: #666; margin: 0 0 5px 0;">Ảnh hiện tại:</p>
+            		<img th:src="@{/images/uploads/{filename}(filename=*{anhCccdTruoc})}" style="max-width: 200px; border-radius: 4px; border: 1px solid #ddd;" />
+        		</div>
+    		</div>
+    		
+    		<div style="margin-bottom: 20px;">
+        		<label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Ảnh CCCD Mặt sau:</label>
+        		<input type="file" name="fileSau" accept="image/*" style="width: 100%; padding: 5px; box-sizing: border-box;"/>
+        		<div th:if="*{anhCccdSau}" style="margin-top: 10px;">
+            		<p style="font-size: 12px; color: #666; margin: 0 0 5px 0;">Ảnh hiện tại:</p>
+            		<img th:src="@{/images/uploads/{filename}(filename=*{anhCccdSau})}" style="max-width: 200px; border-radius: 4px; border: 1px solid #ddd;" />
+        		</div>
+    		</div>
+    		
             <div style="margin-bottom: 20px;">
                 <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">Địa chỉ Email:</label>
                 <input type="email" th:field="*{email}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"/>

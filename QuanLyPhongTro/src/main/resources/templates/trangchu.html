@@ -39,10 +39,15 @@
                     <a class="nav-link" href="/admin/phong" style="color: #f1c40f;">🏢 Quản Lý Phòng</a>
                     <a class="nav-link" href="/admin/hoadon" style="color: #f1c40f;">💵 Quản Lý Hóa Đơn</a>
                     <a class="nav-link" href="/admin/yeucau" style="color: #f1c40f;">📩 Duyệt Yêu Cầu</a>
+                    
+                    <a class="nav-link" href="/admin/tai-khoan" style="color: #f1c40f; background-color: #34495e; border-radius: 4px;">👥 Quản Lý Tài Khoản</a>
                 </div>
 
                 <span style="color: #1abc9c; font-weight: bold; margin-left: 10px;">
-                    👤 Xin chào, <span sec:authentication="name"></span>!
+                    👤 Xin chào, 
+                    <a th:href="@{/tai-khoan}" style="color: #1abc9c; text-decoration: none; border-bottom: 1px dashed #1abc9c;" title="Bấm để xem thông tin cá nhân">
+                        <span sec:authentication="name"></span>
+                    </a>!
                 </span>
                 
                 <form th:action="@{/dangxuat}" method="post" style="display: inline;">

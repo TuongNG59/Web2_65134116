@@ -45,6 +45,15 @@ public class NguoiDung {
     @JoinColumn(name = "maphong") 
     private PhongTro phongTro;
 
+    @Column(name = "dia_chi")
+    private String diaChi;
+
+    @Column(name = "anh_cccd_truoc")
+    private String anhCccdTruoc;
+
+    @Column(name = "anh_cccd_sau")
+    private String anhCccdSau;
+    
     public NguoiDung() {
     }
 
@@ -171,5 +180,31 @@ public class NguoiDung {
 	public void setHanSuDungOTP(java.time.LocalDateTime hanSuDungOTP) {
 		this.hanSuDungOTP = hanSuDungOTP;
 	}
+
+	public String getDiaChi() {
+		return diaChi;
+	}
+
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
+	}
+
+	public String getAnhCccdTruoc() {
+		return anhCccdTruoc;
+	}
+
+	public void setAnhCccdTruoc(String anhCccdTruoc) {
+		this.anhCccdTruoc = anhCccdTruoc;
+	}
+
+	public String getAnhCccdSau() {
+		return anhCccdSau;
+	}
+
+	public void setAnhCccdSau(String anhCccdSau) {
+		this.anhCccdSau = anhCccdSau;
+	}
+	
+	
 	
 }

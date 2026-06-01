@@ -112,17 +112,50 @@ public class TaiKhoanController {
     // 2. Xử lý khi người dùng bấm nút "Cập nhật thông tin"
     @PostMapping("/tai-khoan/cap-nhat")
     public String capNhatTaiKhoan(@ModelAttribute("user") NguoiDung thongTinMoi, 
+                                  @org.springframework.web.bind.annotation.RequestParam("fileTruoc") org.springframework.web.multipart.MultipartFile fileTruoc,
+                                  @org.springframework.web.bind.annotation.RequestParam("fileSau") org.springframework.web.multipart.MultipartFile fileSau,
                                   @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
         
         String tenDangNhap = userDetails.getUsername();
         NguoiDung userTrongDb = nguoiDungService.findByTenDangNhap(tenDangNhap).orElse(null);
         
         if (userTrongDb != null) {
-            // Chỉ cho phép sửa các trường thông tin cơ bản, không sửa Tên đăng nhập và Mật khẩu ở đây
+            // 1. Cập nhật các thông tin chữ thông thường
             userTrongDb.setHoVaTen(thongTinMoi.getHoVaTen());
             userTrongDb.setSoDienThoai(thongTinMoi.getSoDienThoai());
             userTrongDb.setCccd(thongTinMoi.getCccd());
-            userTrongDb.setEmail(thongTinMoi.getEmail());
+            userTrongDb.setDiaChi(thongTinMoi.getDiaChi()); // Cập nhật địa chỉ mới
+
+            // Thư mục để lưu ảnh trong dự án của cậu
+            String thuMucLuuAnh = System.getProperty("user.dir") + "/uploads/";
+            java.io.File folder = new java.io.File(thuMucLuuAnh);
+            if (!folder.exists()) {
+                folder.mkdirs(); // Tự tạo thư mục nếu chưa có
+            }
+
+            // 2. Xử lý lưu ảnh Mặt Trước (nếu khách có chọn file mới)
+            if (fileTruoc != null && !fileTruoc.isEmpty()) {
+                try {
+                    String tenFileTruoc = System.currentTimeMillis() + "_" + fileTruoc.getOriginalFilename();
+                    java.nio.file.Path path = java.nio.file.Paths.get(thuMucLuuAnh + tenFileTruoc);
+                    java.nio.file.Files.copy(fileTruoc.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    userTrongDb.setAnhCccdTruoc(tenFileTruoc); // Lưu tên file vào DB
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // 3. Xử lý lưu ảnh Mặt Sau (nếu khách có chọn file mới)
+            if (fileSau != null && !fileSau.isEmpty()) {
+                try {
+                    String tenFileSau = System.currentTimeMillis() + "_" + fileSau.getOriginalFilename();
+                    java.nio.file.Path path = java.nio.file.Paths.get(thuMucLuuAnh + tenFileSau);
+                    java.nio.file.Files.copy(fileSau.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    userTrongDb.setAnhCccdSau(tenFileSau); // Lưu tên file vào DB
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             
             nguoiDungService.capNhatThongTin(userTrongDb); // Lưu lại vào DB
             return "redirect:/tai-khoan?cap_nhat_thanh_cong";
