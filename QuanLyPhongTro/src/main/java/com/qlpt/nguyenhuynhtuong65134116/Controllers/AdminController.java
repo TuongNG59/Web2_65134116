@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro;
+import com.qlpt.nguyenhuynhtuong65134116.Services.NguoiDungService;
 import com.qlpt.nguyenhuynhtuong65134116.Services.PhongTroService;
 
 @Controller
@@ -21,7 +22,10 @@ public class AdminController {
 
     @Autowired
     private PhongTroService phongTroService;
-
+    
+    @Autowired
+    private NguoiDungService nguoiDungService;
+    
     // 1. Trang quản lý danh sách phòng trọ
     @GetMapping("/phong")
     public String quanLyPhong(Model model) {
@@ -61,5 +65,26 @@ public class AdminController {
     public String xoaPhong(@PathVariable(value = "id") Long id) {
         phongTroService.deletePhongTro(id);
         return "redirect:/admin/phong";
+    }
+    
+    // 6. Trang quản lý danh sách tài khoản người dùng
+    @GetMapping("/tai-khoan")
+    public String danhSachTaiKhoan(Model model) {
+        List<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> danhSach = nguoiDungService.layTatCaNguoiDung();
+        model.addAttribute("danhSachNguoiDung", danhSach);
+        
+        // SỬA Ở ĐÂY: Trả về file nằm trong thư mục templates/admin/
+        return "admin/admin_quan_ly_tai_khoan"; 
+    }
+
+    // 7. Xử lý Khóa hoặc Mở khóa tài khoản
+    @GetMapping("/tai-khoan/doi-trang-thai/{id}")
+    public String doiTrangThaiTaiKhoan(@PathVariable("id") Long id) {
+        com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung user = nguoiDungService.findById(id);
+        if (user != null) {
+            user.setTrangThai(!user.getTrangThai()); // Đảo trạng thái true <-> false
+            nguoiDungService.capNhatThongTin(user);
+        }
+        return "redirect:/admin/tai-khoan"; // Đổi xong quay về lại trang danh sách tài khoản
     }
 }

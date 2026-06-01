@@ -80,9 +80,19 @@ public class NguoiDungService {
         return nguoiDungRepository.findByTokenKichHoat(token);
     }
     
- // Hàm tìm người dùng bằng Email cho tính năng Quên mật khẩu
+    // Hàm tìm người dùng bằng Email cho tính năng Quên mật khẩu
     public java.util.Optional<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> findByEmail1(String email) {
         // Hàm này gọi xuống NguoiDungRepository
         return nguoiDungRepository.findByEmail(email);
+    }
+    
+    // Lấy danh sách tất cả tài khoản dưới database cho admin xem
+    public java.util.List<NguoiDung> layTatCaNguoiDung() {
+        return nguoiDungRepository.findAll(); // Dùng hàm findAll() có sẵn của JPA
+    }
+
+    // Tìm người dùng theo ID (khóa chính)
+    public NguoiDung findById(Long id) {
+        return nguoiDungRepository.findById(id).orElse(null);
     }
 }
