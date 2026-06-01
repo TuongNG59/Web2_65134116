@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,81 +17,78 @@ public class ThongBao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "manguoigui", nullable = false)
-    private NguoiDung nguoiGui;
+    @Column(name = "manguoigui", nullable = false)
+    private Long maNguoiGui;
 
-    @ManyToOne
-    @JoinColumn(name = "manguoinhan", nullable = false)
-    private NguoiDung nguoiNhan;
+    @Column(name = "manguoinhan", nullable = false)
+    private Long maNguoiNhan;
 
-    @Column(name = "noidung", length = 1000)
+    @Column(name = "noidung", nullable = false, columnDefinition = "TEXT")
     private String noiDung;
 
     @Column(name = "thoigian")
     private LocalDateTime thoiGian = LocalDateTime.now();
 
     @Column(name = "dadoc")
-    private Boolean daDoc = false;
+    private boolean daDoc = false;
 
-    public ThongBao() {
-    }
+    // --- Constructors ---
+    public ThongBao() {}
 
-    public ThongBao(Long id, NguoiDung nguoiGui, NguoiDung nguoiNhan, String noiDung, LocalDateTime thoiGian,
-            Boolean daDoc) {
-        this.id = id;
-        this.nguoiGui = nguoiGui;
-        this.nguoiNhan = nguoiNhan;
-        this.noiDung = noiDung;
-        this.thoiGian = thoiGian;
-        this.daDoc = daDoc;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public NguoiDung getNguoiGui() {
-        return nguoiGui;
-    }
-
-    public void setNguoiGui(NguoiDung nguoiGui) {
-        this.nguoiGui = nguoiGui;
-    }
-
-    public NguoiDung getNguoiNhan() {
-        return nguoiNhan;
-    }
-
-    public void setNguoiNhan(NguoiDung nguoiNhan) {
-        this.nguoiNhan = nguoiNhan;
-    }
-
-    public String getNoiDung() {
-        return noiDung;
-    }
-
-    public void setNoiDung(String noiDung) {
+    public ThongBao(Long maNguoiGui, Long maNguoiNhan, String noiDung) {
+        this.maNguoiGui = maNguoiGui;
+        this.maNguoiNhan = maNguoiNhan;
         this.noiDung = noiDung;
     }
 
-    public LocalDateTime getThoiGian() {
-        return thoiGian;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setThoiGian(LocalDateTime thoiGian) {
-        this.thoiGian = thoiGian;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Boolean getDaDoc() {
-        return daDoc;
-    }
+	public Long getMaNguoiGui() {
+		return maNguoiGui;
+	}
 
-    public void setDaDoc(Boolean daDoc) {
-        this.daDoc = daDoc;
-    }
+	public void setMaNguoiGui(Long maNguoiGui) {
+		this.maNguoiGui = maNguoiGui;
+	}
+
+	public Long getMaNguoiNhan() {
+		return maNguoiNhan;
+	}
+
+	public void setMaNguoiNhan(Long maNguoiNhan) {
+		this.maNguoiNhan = maNguoiNhan;
+	}
+
+	public String getNoiDung() {
+		return noiDung;
+	}
+
+	public void setNoiDung(String noiDung) {
+		this.noiDung = noiDung;
+	}
+
+	public LocalDateTime getThoiGian() {
+		return thoiGian;
+	}
+
+	public void setThoiGian(LocalDateTime thoiGian) {
+		this.thoiGian = thoiGian;
+	}
+
+	public boolean isDaDoc() {
+		return daDoc;
+	}
+
+	public void setDaDoc(boolean daDoc) {
+		this.daDoc = daDoc;
+	}
+
+    
+    
 }

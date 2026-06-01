@@ -14,22 +14,19 @@ public class ThongBaoService {
     @Autowired
     private ThongBaoRepository thongBaoRepository;
 
-    // Gửi thông báo mới (Admin nhắn tin nhắc nợ, nhắc giữ trật tự...)
-    public ThongBao guiThongBao(ThongBao thongBao) {
-        thongBao.setDaDoc(false);
-        return thongBaoRepository.save(thongBao);
+    // ID mặc định của tài khoản Admin là 1 (dựa theo ảnh database người dùng của cậu)
+    private final Long ADMIN_ID = 1L;
+
+    // Lấy tin nhắn giữa một user cụ thể và Admin
+    public List<ThongBao> getCuocTroChuyenVoiAdmin(Long userId) {
+        return thongBaoRepository.layLichSuChat(userId, ADMIN_ID);
     }
 
-    // Lấy hộp thư đến của một người dùng cụ thể (Xếp tin nhắn mới nhất lên đầu)
-    public List<ThongBao> getHopThuDenCuaUser(Long manguoinhan) {
-        return thongBaoRepository.findByNguoiNhanIdOrderByThoiGianDesc(manguoinhan);
-    }
-
-    // Đánh dấu là đã đọc khi người dùng bấm vào xem tin nhắn
-    public void danhDauDaDoc(Long idThongBao) {
-        thongBaoRepository.findById(idThongBao).ifPresent(tb -> {
-            tb.setDaDoc(true);
-            thongBaoRepository.save(tb);
-        });
+    // Gửi tin nhắn mới
+    public void guiTinNhan(Long maNguoiGui, Long maNguoiNhan, String noiDung) {
+        if(noiDung != null && !noiDung.trim().isEmpty()) {
+            ThongBao tinNhan = new ThongBao(maNguoiGui, maNguoiNhan, noiDung.trim());
+            thongBaoRepository.save(tinNhan);
+        }
     }
 }
