@@ -72,10 +72,42 @@ public class AdminController {
         return "admin/formphong";
     }
 
-    // 5. Xóa phòng
+ // 5. Xử lý Xóa phòng
     @GetMapping("/phong/xoa/{id}")
-    public String xoaPhong(@PathVariable(value = "id") Long id) {
-        phongTroService.deletePhongTro(id);
+    public String xoaPhong(@PathVariable(value = "id") Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        try {
+            // GỠ LIÊN KẾT trong bảng hoadon 
+            // Tìm tất cả hóa đơn dính tới mã phòng này và chuyển mã phòng về null
+            java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon> dsHoaDon = hoaDonRepository.findAll().stream()
+                .filter(hd -> hd.getPhongTro() != null && hd.getPhongTro().getId().equals(id))
+                .toList();
+            for (com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon hd : dsHoaDon) {
+                hd.setPhongTro(null); // Bẻ gãy răng buộc khóa ngoại với phòng sắp xóa
+                hoaDonRepository.save(hd);
+            }
+
+            //XÓA SẠCH các yêu cầu thuê liên quan đến phòng này
+            java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.YeuCauThue> dsYeuCau = yeuCauThueRepository.findAll().stream()
+                .filter(yc -> yc.getPhongTro() != null && yc.getPhongTro().getId().equals(id))
+                .toList();
+            yeuCauThueRepository.deleteAll(dsYeuCau);
+
+            //GIẢI PHÓNG người dùng đang thuê phòng này (nếu có) về trạng thái chưa có phòng
+            java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung> dsNguoiDung = nguoiDungService.layTatCaNguoiDung().stream()
+                .filter(u -> u.getPhongTro() != null && u.getPhongTro().getId().equals(id))
+                .toList();
+            for (com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung u : dsNguoiDung) {
+                u.setPhongTro(null); // Cho người dùng ra khỏi phòng
+                nguoiDungService.capNhatThongTin(u);
+            }
+
+            //CHÍNH THỨC xóa phòng trọ khỏi CSDL khi đã sạch ràng buộc
+            phongTroService.deletePhongTro(id);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         return "redirect:/admin/phong";
     }
     
