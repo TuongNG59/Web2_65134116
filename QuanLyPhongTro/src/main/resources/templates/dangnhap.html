@@ -3,45 +3,153 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng Nhập Hệ Thống</title>
+    <title>Đăng Nhập Hệ Thống - Nhà Trọ Adou</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; text-align: center; padding-top: 50px; }
-        .form-container { background: white; padding: 30px; width: 300px; margin: auto; border-radius: 8px; box-shadow: 0px 0px 10px #ccc; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+		body { 
+		    font-family: 'Segoe UI', Arial, sans-serif; 
+		    /* 🟢 Thay vì dùng màu đơn sắc cũ, cậu đổi thành dòng này: */
+		    background: url('/images/background.jpg') no-repeat center center fixed; 
+		    background-size: cover; /* Giúp ảnh tự động co giãn phủ kín toàn màn hình */
+		    min-height: 100vh;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    padding: 20px;
+		}
+        .form-container { 
+            background: white; 
+            padding: 40px 30px; 
+            width: 100%;
+            max-width: 400px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); 
+        }
+        h2 { 
+            color: #2c3e50; 
+            margin-bottom: 25px; 
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .alert-box {
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .alert-danger {
+            color: #c0392b;
+            background-color: #fce4d6;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #f5b7b1;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #c3e6cb;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #fbfbfb;
+        }
+        input:focus {
+            border-color: #3498db;
+            background-color: white;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+        }
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.1s ease;
+            margin-top: 5px;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+        }
+        button:hover { 
+            background-color: #2980b9; 
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .action-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .action-links a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+        .forgot-pass {
+            color: #7f8c8d !important;
+            font-weight: normal !important;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Đăng Nhập</h2>
         
-        <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">Sai tên đăng nhập hoặc mật khẩu!</div>
-        <div th:if="${param.thanhcong}" style="color: green; margin-bottom: 10px;">Đăng ký thành công! Hãy đăng nhập.</div>
-		<div style="text-align: center; margin-bottom: 15px;">
-    
-    	<div th:if="${param.dang_ky_thanh_cong_vui_long_check_mail}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
-        	🎉 Đăng ký thành công! Vui lòng kiểm tra hộp thư Email để kích hoạt tài khoản.
-    	</div>
+        <div class="alert-box">
+            <!-- Thông báo lỗi đăng nhập sai -->
+            <div th:if="${param.error}" class="alert-danger">Sai tên đăng nhập hoặc mật khẩu!</div>
+            
+            <!-- Các thông báo thành công từ tham số URL -->
+            <div th:if="${param.thanhcong}" class="alert-success">🎉 Đăng ký thành công! Hãy đăng nhập.</div>
+            <div th:if="${param.dang_ky_thanh_cong_vui_long_check_mail}" class="alert-success">🎉 Đăng ký thành công! Vui lòng kiểm tra Email để kích hoạt.</div>
+            <div th:if="${param.kich_hoat_thanh_cong}" class="alert-success">✅ Kích hoạt tài khoản thành công! Đăng nhập ngay.</div>
+            <div th:if="${param.doi_mat_khau_thanh_cong}" class="alert-success">🔑 Đổi mật khẩu thành công! Hãy dùng mật khẩu mới.</div>
+            
+            <!-- Thông báo lỗi kích hoạt -->
+            <div th:if="${param.kich_hoat_that_bai}" class="alert-danger">❌ Link kích hoạt không hợp lệ hoặc đã hết hạn!</div>
+        </div>
 
-    	<div th:if="${param.kich_hoat_thanh_cong}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
-        	✅ Kích hoạt tài khoản thành công! Bạn có thể đăng nhập ngay bây giờ.
-    	</div>
-
-    	<div th:if="${param.kich_hoat_that_bai}" style="color: #721c24; background-color: #f8d7da; padding: 10px; border-radius: 5px; font-weight: bold;">
-        	❌ Link kích hoạt không hợp lệ hoặc đã được sử dụng!
-    	</div>
-		
-		<div th:if="${param.doi_mat_khau_thanh_cong}" style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 5px; font-weight: bold;">
-    		🔑 Đổi mật khẩu thành công! Hãy đăng nhập bằng mật khẩu mới của bạn.
-		</div>
-		</div>
         <form th:action="@{/xuly-dangnhap}" method="post">
-            <input type="text" name="username" placeholder="Tên đăng nhập" required />
-            <input type="password" name="password" placeholder="Mật khẩu" required />
-            <button type="submit">Đăng Nhập</button>
-            <a th:href="@{/quen-mat-khau}" style="display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 14px;">Quên mật khẩu?</a>
+            <div class="form-group">
+                <label>Tên đăng nhập:</label>
+                <input type="text" name="username" placeholder="Nhập tài khoản của bạn" required autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu:</label>
+                <input type="password" name="password" placeholder="Nhập mật khẩu" required />
+            </div>
+            <button type="submit">Đăng Nhập Hệ Thống</button>
         </form>
-        <p>Chưa có tài khoản? <a href="/dangky">Đăng ký ngay</a></p>
+        
+        <div class="action-links">
+            <a th:href="@{/quen-mat-khau}" class="forgot-pass">Quên mật khẩu?</a>
+            <a href="/dangky">Đăng ký tài khoản mới</a>
+        </div>
     </div>
 </body>
 </html>
