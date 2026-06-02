@@ -62,6 +62,11 @@
                        style="background-color: #3498db; padding: 6px 12px; border-radius: 4px; text-decoration: none; color: white; font-weight: bold;">
                        💬 Chat
                     </a>
+                    <a th:href="@{/admin/tai-khoan/xoa/{id}(id=${user.id})}" 
+					   onclick="return confirm('⚠️ Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản này không? Mọi dữ liệu liên quan sẽ bị mất!');"
+					   style="background-color: #e74c3c; padding: 6px 12px; border-radius: 4px; text-decoration: none; color: white; font-weight: bold; margin-left: 5px;">
+					   🗑️ Xóa
+					</a>
                 </td>
             </tr>
         </tbody>

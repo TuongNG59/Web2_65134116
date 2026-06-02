@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro;
+import com.qlpt.nguyenhuynhtuong65134116.Repositories.HoaDonRepository;
+import com.qlpt.nguyenhuynhtuong65134116.Repositories.ThongBaoRepository;
+import com.qlpt.nguyenhuynhtuong65134116.Repositories.YeuCauThueRepository;
 import com.qlpt.nguyenhuynhtuong65134116.Services.NguoiDungService;
 import com.qlpt.nguyenhuynhtuong65134116.Services.PhongTroService;
 
@@ -25,6 +28,15 @@ public class AdminController {
     
     @Autowired
     private NguoiDungService nguoiDungService;
+    
+    @Autowired
+    private YeuCauThueRepository yeuCauThueRepository;
+    
+    @Autowired
+    private ThongBaoRepository thongBaoRepository;
+
+    @Autowired
+    private HoaDonRepository hoaDonRepository;
     
     // 1. Trang quản lý danh sách phòng trọ
     @GetMapping("/phong")
@@ -97,5 +109,46 @@ public class AdminController {
             return "admin/admin_chi_tiet_tai_khoan";
         }
         return "redirect:/admin/tai-khoan?loi_khong_tim_thay_user";
+    }
+    
+    @GetMapping("/tai-khoan/xoa/{id}")
+    public String xoaTaiKhoan(@PathVariable("id") Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+    	try {
+            com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung user = nguoiDungService.findById(id);
+            if (user != null) {
+                // 1. Nếu người dùng đang ở trong phòng, giải phóng phòng đó về trạng thái TRONG
+                if (user.getPhongTro() != null) {
+                    phongTroService.capNhatTrangThai(user.getPhongTro().getId(), "TRONG");
+                }
+                
+                // 2. XÓA SẠCH các Yêu Cầu Thuê của người dùng này để tránh kẹt khóa ngoại
+                java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.YeuCauThue> dsYeuCau = yeuCauThueRepository.findAll().stream()
+                    .filter(yc -> yc.getNguoiDung() != null && yc.getNguoiDung().getId().equals(id))
+                    .toList();
+                yeuCauThueRepository.deleteAll(dsYeuCau);
+                
+                // 3. XÓA SẠCH Lịch sử chat (Thông báo) liên quan đến người dùng này
+                java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.ThongBao> dsChat = thongBaoRepository.findAll().stream()
+                    .filter(t -> id.equals(t.getMaNguoiGui()) || id.equals(t.getMaNguoiNhan()))
+                    .toList();
+                thongBaoRepository.deleteAll(dsChat);
+                
+                // 4. GỠ LIÊN KẾT Hóa Đơn (Biến hóa đơn của người này thành hóa đơn ẩn danh để giữ lại báo cáo tài chính)
+                // Hoặc nếu cậu muốn xóa sạch luôn hóa đơn thì đổi thành: hoaDonRepository.deleteAll(dsHoaDon);
+                java.util.List<com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon> dsHoaDon = hoaDonRepository.findByNguoiDungId(id);
+                for (com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon hd : dsHoaDon) {
+                    hd.setNguoiDung(null); // Gỡ liên kết người dùng
+                    hoaDonRepository.save(hd);
+                }
+                
+                // 5. CHÍNH THỨC xóa tài khoản người dùng
+                nguoiDungService.deleteNguoiDung(id);
+                redirectAttributes.addFlashAttribute("messageSuccess", "🗑️ Đã dọn dẹp dữ liệu liên quan và xóa tài khoản thành công!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("messageError", "❌ Lỗi hệ thống: " + e.getMessage());
+        }
+        return "redirect:/admin/tai-khoan";
     }
 }
