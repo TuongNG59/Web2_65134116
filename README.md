@@ -48,60 +48,58 @@ Hệ thống **Quản lý phòng trọ** được xây dựng nhằm giải quy�
 #### 🔹 Hình 5.3: Giao diện biểu mẫu đăng nhập bảo mật của hệ thống
 <img src="demo_images/5_3.png" alt="Đăng nhập hệ thống" width="85%"/>
 
-#### 🔹 Hình 5.4: Màn hình trung gian xử lý và điều hướng phân quyền tài khoản
-<img src="demo_images/5_4.png" alt="Điều hướng phân quyền" width="85%"/>
 
 ---
 
 ### 👤 PHẦN II: KHÔNG GIAN TƯƠNG TÁC CỦA KHÁCH THUÊ (USER)
 
-#### 🔹 Hình 5.5: Giao diện trang chủ khi tài khoản vừa đăng nhập và chưa liên kết phòng trọ
+#### 🔹 Hình 5.4: Giao diện trang chủ khi tài khoản vừa đăng nhập và chưa liên kết phòng trọ
 <img src="demo_images/5_4_1_1.png" alt="Chưa liên kết phòng" width="85%"/>
 
-#### 🔹 Hình 5.6: Minh chứng thao tác gửi phiếu yêu cầu thuê căn phòng trọ được chọn
+#### 🔹 Hình 5.5: Minh chứng thao tác gửi phiếu yêu cầu thuê căn phòng trọ được chọn
 <img src="demo_images/5_4_1_2.png" alt="Gửi yêu cầu thuê phòng" width="85%"/>
 
-#### 🔹 Hình 5.7: Màn hình trang chủ tự động cập nhật mã phòng sau khi được Admin phê duyệt
+#### 🔹 Hình 5.6: Màn hình trang chủ tự động cập nhật mã phòng sau khi được Admin phê duyệt
 <img src="demo_images/5_4_1_3.png" alt="Đã được duyệt phòng" width="85%"/>
 
-#### 🔹 Hình 5.8: Giao diện trang tài chính thông báo khi chưa có hóa đơn chu kỳ mới
+#### 🔹 Hình 5.7: Giao diện trang hoá đơn báo khi chưa có hóa đơn chu kỳ mới
 <img src="demo_images/5_4_1_4.png" alt="Chưa có hóa đơn tháng" width="85%"/>
 
-#### 🔹 Hình 5.9: Bảng kê chi tiết hóa đơn tiền phòng, điện nước và khu vực tải ảnh minh chứng chuyển khoản
+#### 🔹 Hình 5.8: Bảng kê chi tiết hóa đơn tiền phòng và khu vực thanh toán
 <img src="demo_images/5_4_1_5.png" alt="Chi tiết hóa đơn tiêu thụ" width="85%"/>
 
-#### 🔹 Hình 5.10: Giao diện hộp thư nội bộ gửi báo cáo sự cố hạ tầng về cho chủ trọ
+#### 🔹 Hình 5.9: Giao diện hộp thư nội bộ gửi báo cáo sự cố hạ tầng về cho chủ trọ
 <img src="demo_images/5_4_1_6.png" alt="Hộp thư báo lỗi user" width="85%"/>
 
-#### 🔹 Hình 5.11: Biểu mẫu cập nhật thông tin hồ sơ cá nhân và đính kèm ảnh chụp CCCD hai mặt
+#### 🔹 Hình 5.10: Biểu mẫu cập nhật thông tin hồ sơ cá nhân và đính kèm ảnh chụp CCCD hai mặt
 <img src="demo_images/5_4_1_7.png" alt="Cập nhật CCCD hồ sơ" width="85%"/>
 
 ---
 
 ### 🛡️ PHẦN III: KHÔNG GIAN QUẢN TRỊ CỦA CHỦ TRỌ (ADMIN)
 
-#### 🔹 Hình 5.12: Bảng điều khiển quản trị tổng quan (Dashboard) của tài khoản Admin
+#### 🔹 Hình 5.11: Bảng điều khiển quản trị tổng quan (Dashboard) của tài khoản Admin
 <img src="demo_images/5_4_2_1.png" alt="Dashboard tổng quan Admin" width="85%"/>
 
-#### 🔹 Hình 5.13: Giao diện danh sách quản lý hạ tầng hệ thống phòng trọ kèm bộ lọc trạng thái
+#### 🔹 Hình 5.12: Giao diện danh sách quản lý hạ tầng hệ thống phòng trọ kèm bộ lọc trạng thái
 <img src="demo_images/5_4_2_2.png" alt="Quản lý phòng trọ" width="85%"/>
 
-#### 🔹 Hình 5.14: Biểu mẫu thiết lập các thông số kỹ thuật và cấu hình thêm phòng trọ mới
+#### 🔹 Hình 5.13: Biểu mẫu thiết lập các thông số kỹ thuật và cấu hình thêm phòng trọ mới
 <img src="demo_images/5_4_2_3.png" alt="Thêm phòng trọ mới" width="85%"/>
 
-#### 🔹 Hình 5.15: Trung tâm giám sát lịch sử, bộ lọc trạng thái thanh toán của toàn bộ hóa đơn
+#### 🔹 Hình 5.14: Trung tâm giám sát trạng thái thanh toán của toàn bộ hóa đơn
 <img src="demo_images/5_4_2_4.png" alt="Danh sách quản lý hóa đơn" width="85%"/>
 
-#### 🔹 Hình 5.16: Biểu mẫu khởi tạo hóa đơn tự động tính toán theo chỉ số tiêu thụ điện nước
+#### 🔹 Hình 5.15: Biểu mẫu khởi tạo hóa đơn tự động tính toán theo chỉ số tiêu thụ điện nước
 <img src="demo_images/5_4_2_5.png" alt="Lập hóa đơn tự động" width="85%"/>
 
-#### 🔹 Hình 5.17: Danh sách tiếp nhận, xử lý và phê duyệt các yêu cầu thuê phòng trực tuyến từ khách
+#### 🔹 Hình 5.16: Danh sách tiếp nhận, xử lý và phê duyệt các yêu cầu thuê phòng trực tuyến từ khách
 <img src="demo_images/5_4_2_6.png" alt="Phê duyệt yêu cầu thuê" width="85%"/>
 
-#### 🔹 Hình 5.18: Giao diện quản lý danh sách tài khoản, kiểm tra ảnh CCCD lưu trú và chức năng khóa quyền
+#### 🔹 Hình 5.17: Giao diện quản lý danh sách tài khoản, kiểm tra ảnh CCCD lưu trú và chức năng khóa quyền
 <img src="demo_images/5_4_2_7.png" alt="Quản lý hồ sơ tài khoản" width="85%"/>
 
-#### 🔹 Hình 5.19: Trung tâm điều phối, tiếp nhận và phản hồi luồng tin nhắn báo lỗi từ khách thuê
+#### 🔹 Hình 5.18: Trung tâm điều phối, tiếp nhận và phản hồi luồng tin nhắn báo lỗi từ khách thuê
 <img src="demo_images/5_4_2_8.png" alt="Hộp thư điều phối tin nhắn" width="85%"/>
 
 ---
