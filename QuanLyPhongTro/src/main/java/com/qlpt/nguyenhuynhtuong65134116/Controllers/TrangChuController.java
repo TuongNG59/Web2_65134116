@@ -39,12 +39,22 @@ public class TrangChuController {
     private HoaDonService hoaDonService;
 
     @GetMapping("/")
-    public String xemTrangChu(Model model) {
+    public String xemTrangChu(Model model, @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
         // Gọi Service lấy danh sách các phòng có trạng thái "TRONG"
     	List<PhongTro> danhSachPhong = phongTroService.getPhongTrong();
         
         // Đóng gói danh sách này vào Model để gửi sang file HTML
         model.addAttribute("danhSachPhong", danhSachPhong);
+        
+        if (userDetails != null) {
+            // Lọc tìm thông tin đầy đủ của người dùng hiện tại
+            NguoiDung khach = nguoiDungService.findByTenDangNhap(userDetails.getUsername()).orElse(null);
+            
+            // Nếu tìm thấy khách và khách này thực sự đã được Admin duyệt phòng (phongTro != null)
+            if (khach != null && khach.getPhongTro() != null) {
+                model.addAttribute("tenPhongCuaToi", khach.getPhongTro().getTenPhong());
+            }
+        }
         
         // Trả về tên file HTML là "trangchu" (Spring Boot tự hiểu là trangchu.html)
         return "trangchu";
