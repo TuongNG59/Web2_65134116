@@ -32,7 +32,7 @@
             <input type="text" th:field="*{thangNam}" placeholder="Ví dụ: 06/2026" required />
 
             <label>Tiền phòng cơ bản (VNĐ):</label>
-            <input type="number" th:field="*{tienPhong}" placeholder="Ví dụ: 2000000" required />
+            <input type="hidden" th:field="*{tienPhong}" value="0" />
 
             <label>Số điện cũ - Số điện mới:</label>
             <div style="display: flex; gap: 10px;">

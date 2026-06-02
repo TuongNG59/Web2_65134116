@@ -42,7 +42,9 @@ public class PhongTroService {
 
     // Lấy danh sách các phòng còn trống để hiển thị cho khách vãng lai xem
     public List<PhongTro> getPhongTrong() {
-        return phongTroRepository.findByTrangThai("TRONG");
+    	return phongTroRepository.findAll().stream()
+                .filter(p -> "TRONG".equals(p.getTrangThai()) || "CHODUYET".equals(p.getTrangThai()))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     // Hàm cập nhật nhanh trạng thái phòng

@@ -51,7 +51,9 @@ public class TrangChuController {
     }
     
     @PostMapping("/thue-phong/{id}")
-    public String guiYeuCauThuePhong(@PathVariable(value = "id") Long idPhong, @AuthenticationPrincipal UserDetails userDetails) {
+    public String guiYeuCauThuePhong(@PathVariable(value = "id") Long idPhong, 
+            @org.springframework.security.core.annotation.AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails,
+            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
         // Chưa đăng nhập thì đá về trang đăng nhập
         if (userDetails == null) {
             return "redirect:/dangnhap"; 
@@ -68,9 +70,13 @@ public class TrangChuController {
             yeuCau.setTrangThai("CHODUYET"); // Chờ Admin duyệt
             
             yeuCauThueService.guiYeuCauThue(yeuCau);
+            
+            phong.setTrangThai("CHODUYET");
+            phongTroService.savePhongTro(phong);
+            redirectAttributes.addFlashAttribute("thongBaoThanhCong", "🎉 Gửi yêu cầu thuê " + phong.getTenPhong() + " thành công! Vui lòng đợi chủ trọ duyệt.");
         }
         
-        return "redirect:/?gui_thanh_cong"; // Trả về trang chủ kèm thông báo thành công trên URL
+        return "redirect:/"; // Trả về trang chủ kèm thông báo thành công trên URL
     }
     
     @GetMapping("/hoa-don/thanh-toan/{id}")

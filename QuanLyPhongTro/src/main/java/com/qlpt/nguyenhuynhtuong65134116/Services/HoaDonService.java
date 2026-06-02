@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.qlpt.nguyenhuynhtuong65134116.Models.HoaDon;
 import com.qlpt.nguyenhuynhtuong65134116.Repositories.HoaDonRepository;
+import com.qlpt.nguyenhuynhtuong65134116.Repositories.PhongTroRepository;
 
 @Service
 public class HoaDonService {
 
+	@Autowired
+	private PhongTroRepository phongTroRepository;
+	
     @Autowired
     private HoaDonRepository hoaDonRepository;
 
@@ -36,9 +40,13 @@ public class HoaDonService {
 
     // Logic Tự Động Tính Tiền và Lưu Hóa Đơn
     public HoaDon taoHoacCapNhatHoaDon(HoaDon hoaDon) {	
-    	// TỰ ĐỘNG NẠP GIÁ PHÒNG CƠ BẢN TỪ PHÒNG TRỌ VÀO HÓA ĐƠN
-        if (hoaDon.getPhongTro() != null) {
-            hoaDon.setTienPhong(hoaDon.getPhongTro().getGiaCoBan());
+    	// TỰ ĐỘNG NẠP GIÁ PHÒNG CƠ BẢN TỪ DATABASE
+        if (hoaDon.getPhongTro() != null && hoaDon.getPhongTro().getId() != null) {
+        	com.qlpt.nguyenhuynhtuong65134116.Models.PhongTro phongFull = phongTroRepository.findById(hoaDon.getPhongTro().getId()).orElse(null);
+            if (phongFull != null) {
+                hoaDon.setPhongTro(phongFull); // Gán object đầy đủ vào hóa đơn
+                hoaDon.setTienPhong(phongFull.getGiaCoBan()); // Chốt giá
+            }
         }
         
         // 1. Tính tiền điện: (Số mới - Số cũ) * Đơn giá
