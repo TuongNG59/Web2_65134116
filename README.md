@@ -1,125 +1,140 @@
-<div align="center">
+# 🏢 Bài tập lớn Quản Lý Nhà Trọ Adou
 
-# 🏠 Adou Hostel — Hệ Thống Quản Lý & Cho Thuê Phòng Trọ
-
----
-
-![Java](https://img.shields.io/badge/Java_17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
-![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-
-</div>
+> **Học phần:** Phát tiển ứng dụng web 2  
+> **Sinh viên thực hiện:** Nguyễn Huỳnh Tường  65134116
+> **Công nghệ nền tảng:** Spring Boot Mvc + Thymeleaf + MySQL
 
 ---
 
-## 📖 Giới Thiệu Dự Án
+## 🧭 Tổng Quan Giải Pháp
 
-**Adou Hostel** là một ứng dụng web được thiết kế nhằm số hóa quy trình quản lý kinh doanh phòng trọ. Hệ thống giải quyết các bài toán của 1 người chủ trọ trong việc tính toán hóa đơn điện nước, quản lý khách thuê; đồng thời mang lại trải nghiệm tìm phòng, theo dõi chi phí và tiện lợi nhất cho người đi thuê.
+Hệ thống **Quản lý phòng trọ** được xây dựng nhằm giải quyết bài toán thủ công trong vận hành nhà trọ truyền thống. Bằng cách số hóa toàn bộ dữ liệu, ứng dụng giúp tối ưu hóa quy trình tương tác hai chiều giữa **Chủ trọ (Admin)** và **Khách thuê (User)**, giảm thiểu sai sót khi tính toán hóa đơn và minh bạch hóa chi phí lưu trú.
 
-### ✨ Điểm Nổi Bật
-
-- 🏛️ **Kiến Trúc MVC Chuẩn Mực** — Codebase được tổ chức theo mô hình Model-View-Controller (MVC) với Spring Boot, đảm bảo tính chặt chẽ, dễ bảo trì và mở rộng.
-- 🔐 **Bảo Mật Tối Ưu** — Tích hợp Spring Security phân quyền khép kín cho 2 vai trò: `ROLE_ADMIN` (Chủ trọ) và `ROLE_USER` (Khách thuê).
-- 💰 **Tự Động Hóa Kế Toán** — Thuật toán tự động tính toán tổng tiền dựa trên chỉ số điện nước cũ/mới và giá phòng cố định.
-- 📂 **Quản Lý Dữ Liệu An Toàn** — Xử lý triệt để các vấn đề về khóa ngoại (Foreign Key Constraints) khi dọn dẹp dữ liệu, đảm bảo hệ thống không bao giờ bị gián đoạn.
+### Kỹ Thuật Nổi Bật Trong Dự Án
+* **Spring Architecture:** Tổ chức mã nguồn phân tầng rõ ràng (Controller -> Service -> Repository -> Model Entities).
+* **Data Integrity Protection:** Triển khai các hàm dọn dẹp liên kết khóa ngoại chạy ngầm (`foreign key constraints`) trong Spring Data JPA, ngăn chặn triệt để lỗi sập luồng (Error 500) khi xóa các thực thể phòng trọ hoặc tài khoản.
+* **Security & Authentication:** Trích xuất thông tin trực tiếp từ kiến trúc Session của hệ thống để phân định không gian làm việc độc lập cho từng nhóm quyền `ROLE_ADMIN` và `ROLE_USER`.
 
 ---
 
-## 📸 Giao Diện Hệ Thống
+## 🛠️ Bản Đồ Chức Năng Hệ Thống (System Capabilities)
 
-### 👤 Khu Vực Khách Thuê (USER)
+### 🟢 Phân Hệ Khách Thuê (USER Workspace)
+- **Khám phá & Đăng ký lưu trú:** Tra cứu hệ thống phòng trống theo thời gian thực và gửi phiếu yêu cầu thuê phòng trực tuyến lên hàng đợi của Admin.
+- **Quản lý chi phí hằng tháng:** Tiếp nhận hóa đơn tính tiền, xem giá cả.
+- **Tương tác nội bộ:** Gửi tin nhắn trực tiếp để giải đáp thắc mắc về trung tâm xử lý của chủ trọ.
+- **Bảo mật hồ sơ:** Quản lý và cập nhật thông tin định danh cá nhân, ảnh chụp căn cước công dân (CCCD) để đăng ký tạm trú.
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <strong>🏠 Trang Chủ & Danh Sách Phòng</strong><br/>
-      <img src="demo_images/trang_chu.png" alt="Trang Chủ" width="100%"/>
-      <br/><sub>Hiển thị trực quan danh sách các phòng trống. Khách có thể bấm "Gửi Yêu Cầu Thuê" trực tiếp.</sub>
-    </td>
-    <td align="center" width="50%">
-      <strong>🧾 Hóa Đơn Hàng Tháng</strong><br/>
-      <img src="demo_images/xem_hoa_don.png" alt="Hóa Đơn" width="100%"/>
-      <br/><sub>Bảng kê chi tiết chỉ số điện/nước cũ mới, tiền phòng và tổng chi phí cần thanh toán cực kỳ minh bạch.</sub>
-    </td>
-  </tr>
-</table>
-
-### 👤 Không Gian Làm Việc — Chủ Trọ (ADMIN)
-
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <strong>📊 Quản Lý Phòng Trọ</strong><br/>
-      <img src="demo_images/quan_ly_phong.png" alt="Quản Lý Phòng" width="100%"/>
-      <br/><sub>Thêm, sửa, xóa phòng trọ. Theo dõi trạng thái từng phòng (Trống, Chờ duyệt, Đã thuê).</sub>
-    </td>
-    <td align="center" width="50%">
-      <strong>👥 Quản Lý Tài Khoản Khách</strong><br/>
-      <img src="demo_images/quan_ly_tai_khoan.png" alt="Quản Lý Tài Khoản" width="100%"/>
-      <br/><sub>Giám sát thông tin, xem ảnh CCCD mặt trước/sau và thao tác Khóa/Mở khóa tài khoản khách vi phạm.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <strong>✅ Duyệt Yêu Cầu Thuê</strong><br/>
-      <img src="demo_images/duyet_yeu_cau.png" alt="Duyệt Yêu Cầu" width="100%"/>
-      <br/><sub>Phê duyệt khách vào phòng. Tự động chuyển đổi trạng thái phòng và gán mã phòng cho khách.</sub>
-    </td>
-    <td align="center" width="50%">
-      <strong>📝 Lập Hóa Đơn Tự Động</strong><br/>
-      <img src="demo_images/lap_hoa_don.png" alt="Lập Hóa Đơn" width="100%"/>
-      <br/><sub>Tự động điền giá phòng cơ bản, chỉ cần nhập chỉ số điện nước mới, hệ thống tự lo phần tính toán.</sub>
-    </td>
-  </tr>
-</table>
+### 🔵 Phân Hệ Quản Trị Viên (ADMIN Workspace)
+- **Quản lý hạ tầng:** Tạo lập, điều chỉnh thông số diện tích, đơn giá phòng và dọn dẹp các phòng trọ không còn người thuê.
+- **Kiểm duyệt vận hành:** Xét duyệt danh sách khách đăng ký thuê phòng, tự động gán mã phòng và cập nhật trạng thái phòng thành công.
+- **Kế toán tự động:** Nhập chỉ số tiêu thụ điện nước mới, hệ thống tự trích xuất đơn giá cố định và tự động nhân chia cộng gộp ra tổng tiền hóa đơn.
+- **Giám sát an ninh:** Quản lý thông tin hồ sơ của khách, thực thi lệnh khóa/mở khóa quyền truy cập hệ thống của khách thuê, xoá tài khoản khách thuê.
 
 ---
 
-## ⚙️ Tính Năng Chi Tiết
-
-| Phân hệ | Chức năng cốt lõi |
-|---|---|
-| **Dùng Chung** | <ul><li>Đăng ký / Đăng nhập tài khoản an toàn với mật khẩu mã hóa.</li><li>Cập nhật hồ sơ cá nhân.</li></ul> |
-| **Khách Thuê (USER)** | <ul><li>Xem danh sách phòng trống trên hệ thống.</li><li>Gửi yêu cầu thuê phòng bất đồng bộ (trạng thái chờ duyệt).</li><li>Theo dõi hóa đơn điện nước chi tiết hằng tháng.</li><li>Sử dụng hộp thư nội bộ để báo cáo sự cố hỏng hóc cho chủ trọ.</li></ul> |
-| **Chủ Trọ (ADMIN)** | <ul><li>**Quản lý Phòng:** Thêm mới, chỉnh sửa giá/diện tích, xóa phòng (tự động dọn dẹp khóa ngoại).</li><li>**Quản lý Khách hàng:** Xem chi tiết hồ sơ CCCD, Khóa/Mở khóa quyền đăng nhập của khách.</li><li>**Xét duyệt:** Duyệt yêu cầu thuê phòng từ khách.</li><li>**Kế toán:** Lập hóa đơn tính tiền tự động dựa trên chỉ số tiêu thụ.</li><li>**Thông báo:** Đọc và phản hồi tin nhắn từ khách thuê.</li></ul> |
+## 📸 Giao diện hệ thống
 
 ---
 
-## 🏛️ Kiến Trúc Cơ Sở Dữ Liệu
+### 🌐 PHẦN I: PHÂN HỆ XÁC THỰC & CHỨC NĂNG CHUNG
 
-Dự án sử dụng cơ sở dữ liệu quan hệ **MySQL** được thiết kế chuẩn hóa, đảm bảo tính toàn vẹn dữ liệu. Bao gồm 5 bảng chính liên kết chặt chẽ:
+#### 🔹 Hình 5.1: Giao diện trang chủ hệ thống dành cho khách vãng lai (Chưa đăng nhập)
+<img src="demo_images/5_1.png" alt="Trang chủ vãng lai" width="85%"/>
 
-- `phongtro`: Quản lý danh mục phòng, giá cơ bản, trạng thái.
-- `nguoidung`: Lưu hồ sơ khách thuê, tài khoản, mật khẩu, quyền truy cập và liên kết tới `phongtro`.
-- `hoadon`: Quản lý chỉ số điện, nước, tính toán tổng tiền hằng tháng.
-- `yeucauthue`: Bảng trung gian ghi nhận yêu cầu đặt phòng.
-- `thongbao`: Hệ thống hộp thư nội bộ.
+#### 🔹 Hình 5.2: Biểu mẫu đăng ký tài khoản thành viên mới cho khách thuê
+<img src="demo_images/5_2.png" alt="Đăng ký tài khoản" width="85%"/>
+
+#### 🔹 Hình 5.3: Giao diện biểu mẫu đăng nhập bảo mật của hệ thống
+<img src="demo_images/5_3.png" alt="Đăng nhập hệ thống" width="85%"/>
+
+#### 🔹 Hình 5.4: Màn hình trung gian xử lý và điều hướng phân quyền tài khoản
+<img src="demo_images/5_4.png" alt="Điều hướng phân quyền" width="85%"/>
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Chạy Dự Án
+### 👤 PHẦN II: KHÔNG GIAN TƯƠNG TÁC CỦA KHÁCH THUÊ (USER)
 
-### 📋 Yêu Cầu Môi trường
-- **Java:** JDK 17 hoặc mới hơn.
-- **IDE:** Eclipse hoặc IntelliJ IDEA.
-- **Database:** XAMPP (MySQL).
+#### 🔹 Hình 5.5: Giao diện trang chủ khi tài khoản vừa đăng nhập và chưa liên kết phòng trọ
+<img src="demo_images/5_4_1_1.png" alt="Chưa liên kết phòng" width="85%"/>
 
-### Bước 1 — Khởi Tạo Cơ Sở Dữ Liệu (MySQL)
-1. Mở **XAMPP Control Panel** và Start module **Apache** & **MySQL**.
-2. Truy cập `http://localhost/phpmyadmin/`.
-3. Tạo một database mới tên là `quanlyphongtro` (Collation: `utf8mb4_general_ci`).
-4. Import file cơ sở dữ liệu `quanlyphongtro.sql` (đính kèm trong thư mục dự án) vào để khởi tạo các bảng và dữ liệu mẫu.
+#### 🔹 Hình 5.6: Minh chứng thao tác gửi phiếu yêu cầu thuê căn phòng trọ được chọn
+<img src="demo_images/5_4_1_2.png" alt="Gửi yêu cầu thuê phòng" width="85%"/>
 
-### Bước 2 — Cấu Hình Ứng Dụng (Spring Boot)
-Mở dự án bằng Eclipse/IntelliJ, tìm đến file `src/main/resources/application.properties` và cập nhật thông tin:
+#### 🔹 Hình 5.7: Màn hình trang chủ tự động cập nhật mã phòng sau khi được Admin phê duyệt
+<img src="demo_images/5_4_1_3.png" alt="Đã được duyệt phòng" width="85%"/>
 
+#### 🔹 Hình 5.8: Giao diện trang tài chính thông báo khi chưa có hóa đơn chu kỳ mới
+<img src="demo_images/5_4_1_4.png" alt="Chưa có hóa đơn tháng" width="85%"/>
+
+#### 🔹 Hình 5.9: Bảng kê chi tiết hóa đơn tiền phòng, điện nước và khu vực tải ảnh minh chứng chuyển khoản
+<img src="demo_images/5_4_1_5.png" alt="Chi tiết hóa đơn tiêu thụ" width="85%"/>
+
+#### 🔹 Hình 5.10: Giao diện hộp thư nội bộ gửi báo cáo sự cố hạ tầng về cho chủ trọ
+<img src="demo_images/5_4_1_6.png" alt="Hộp thư báo lỗi user" width="85%"/>
+
+#### 🔹 Hình 5.11: Biểu mẫu cập nhật thông tin hồ sơ cá nhân và đính kèm ảnh chụp CCCD hai mặt
+<img src="demo_images/5_4_1_7.png" alt="Cập nhật CCCD hồ sơ" width="85%"/>
+
+---
+
+### 🛡️ PHẦN III: KHÔNG GIAN QUẢN TRỊ CỦA CHỦ TRỌ (ADMIN)
+
+#### 🔹 Hình 5.12: Bảng điều khiển quản trị tổng quan (Dashboard) của tài khoản Admin
+<img src="demo_images/5_4_2_1.png" alt="Dashboard tổng quan Admin" width="85%"/>
+
+#### 🔹 Hình 5.13: Giao diện danh sách quản lý hạ tầng hệ thống phòng trọ kèm bộ lọc trạng thái
+<img src="demo_images/5_4_2_2.png" alt="Quản lý phòng trọ" width="85%"/>
+
+#### 🔹 Hình 5.14: Biểu mẫu thiết lập các thông số kỹ thuật và cấu hình thêm phòng trọ mới
+<img src="demo_images/5_4_2_3.png" alt="Thêm phòng trọ mới" width="85%"/>
+
+#### 🔹 Hình 5.15: Trung tâm giám sát lịch sử, bộ lọc trạng thái thanh toán của toàn bộ hóa đơn
+<img src="demo_images/5_4_2_4.png" alt="Danh sách quản lý hóa đơn" width="85%"/>
+
+#### 🔹 Hình 5.16: Biểu mẫu khởi tạo hóa đơn tự động tính toán theo chỉ số tiêu thụ điện nước
+<img src="demo_images/5_4_2_5.png" alt="Lập hóa đơn tự động" width="85%"/>
+
+#### 🔹 Hình 5.17: Danh sách tiếp nhận, xử lý và phê duyệt các yêu cầu thuê phòng trực tuyến từ khách
+<img src="demo_images/5_4_2_6.png" alt="Phê duyệt yêu cầu thuê" width="85%"/>
+
+#### 🔹 Hình 5.18: Giao diện quản lý danh sách tài khoản, kiểm tra ảnh CCCD lưu trú và chức năng khóa quyền
+<img src="demo_images/5_4_2_7.png" alt="Quản lý hồ sơ tài khoản" width="85%"/>
+
+#### 🔹 Hình 5.19: Trung tâm điều phối, tiếp nhận và phản hồi luồng tin nhắn báo lỗi từ khách thuê
+<img src="demo_images/5_4_2_8.png" alt="Hộp thư điều phối tin nhắn" width="85%"/>
+
+---
+
+## 💾 Thiết Kế Lược Đồ Dữ Liệu (MySQL)
+
+Hệ thống tổ chức lưu trữ thông tin tập trung trên RDBMS MySQL thông qua 5 bảng quan hệ logic đã được chuẩn hóa cấu trúc:
+1. `phongtro`: Ghi nhận dữ liệu cốt lõi về tên phòng, giá phòng cố định, diện tích và trạng thái phòng.
+2. `nguoidung`: Quản lý định danh tài khoản, mật khẩu băm, thông tin cá nhân và trường khóa ngoại `maphong`.
+3. `hoadon`: Lưu trữ lịch sử tính tiền, mốc thời gian, các chỉ số điện nước cũ/mới và chuỗi ảnh minh chứng.
+4. `yeucauthue`: Hàng đợi lưu trữ các phiếu đăng ký đặt phòng từ khách thuê gửi lên.
+5. `thongbao`: Kênh lưu trữ nội dung tin nhắn chat nội bộ giữa các tài khoản.
+
+---
+
+## ⚙️ Hướng Dẫn Triển Khai Hệ Thống Tại Máy Cục Bộ (Local)
+
+### ⌨️ Chuẩn bị môi trường máy chủ
+* Nền tảng Java: JDK 17+.
+* Cơ sở dữ liệu: XAMPP Server v3.3+.
+* Trình biên dịch: Eclipse IDE hoặc IntelliJ IDEA.
+
+### Bước 1: Đồng bộ hóa cơ sở dữ liệu
+1. Khởi động hai dịch vụ **Apache** và **MySQL** bên trong XAMPP Control Panel.
+2. Sử dụng trình duyệt truy cập vào hệ quản trị `http://localhost/phpmyadmin/`.
+3. Tạo mới một cơ sở dữ liệu trống với tên chính xác là: `quanlyphongtro`.
+4. Chọn tab **Import**, tải file script dữ liệu `quanlyphongtro.sql` đính kèm lên hệ thống để tự động thiết lập cấu trúc bảng và nạp dữ liệu demo.
+
+### Bước 2: Thiết lập tham số kết nối cấu hình Spring Boot
+Mở mã nguồn dự án trên IDE, tìm đến file cấu hình hệ thống `src/main/resources/application.properties` để điều chỉnh thông số truy cập MySQL của máy cậu:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/quanlyphongtro?useUnicode=true&characterEncoding=UTF-8
 spring.datasource.username=root
 spring.datasource.password=
-# Hibernate configuration
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
