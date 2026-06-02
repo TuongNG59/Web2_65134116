@@ -33,6 +33,18 @@ Hệ thống **Quản lý phòng trọ** được xây dựng nhằm giải quy�
 
 ---
 
+## 🏛️ Kiến Trúc Hệ Thống (System Architecture)
+
+Dự án Adou Hostel được xây dựng dựa trên kiến trúc **MVC (Model - View - Controller)** chuẩn mực, kết hợp sức mạnh của các framework hàng đầu trong hệ sinh thái Java để đảm bảo hiệu năng và khả năng mở rộng:
+
+- **Tầng Giao Diện (View):** Sử dụng bộ máy dựng hình động **Thymeleaf** kết hợp cùng HTML5, CSS3 và Bootstrap 5 để kết xuất dữ liệu trực tiếp từ máy chủ trả về, giúp giao diện hiển thị đồng bộ và mượt mà.
+- **Tầng Điều Hướng (Controller):** Các lớp `@Controller` trong **Spring Boot** đóng vai trò tiếp nhận các yêu cầu HTTP (HTTP Requests) từ người dùng, điều phối luồng dữ liệu và chuyển tiếp đến các Service tương ứng.
+- **Tầng Xử Lý Nghiệp Vụ (Service):** Nơi chứa toàn bộ logic lõi của hệ thống (ví dụ: thuật toán tự động tính tiền điện nước, kịch bản gỡ liên kết phòng trước khi xóa, hoặc thao tác khóa tài khoản).
+- **Tầng Truy Xuất Dữ Liệu (Repository/Model):** Ứng dụng **Spring Data JPA** để ánh xạ thực thể đối tượng (ORM) và tương tác trực tiếp với hệ quản trị cơ sở dữ liệu **MySQL**, đảm bảo tính toàn vẹn dữ liệu thông qua các ràng buộc khóa ngoại (Foreign Keys) chặt chẽ.
+- **Tầng Bảo Mật:** Tích hợp **Spring Security** với cơ chế phân quyền nghiêm ngặt dựa trên vai trò (`ROLE_ADMIN`, `ROLE_USER`), bảo vệ các đường dẫn nhạy cảm và mã hóa mật khẩu an toàn.
+
+---
+
 ## 📸 Giao diện hệ thống
 
 ---
@@ -104,6 +116,42 @@ Hệ thống **Quản lý phòng trọ** được xây dựng nhằm giải quy�
 
 ---
 
+## ⚙️ Tính Năng Chi Tiết
+
+### 🌐 Khu Vực Công Khai & Xác Thực
+
+| Trang | Mô tả chức năng |
+|---|---|
+| **Trang Chủ** | Hiển thị danh sách toàn bộ phòng trọ hiện có trên hệ thống kèm theo các thông số cơ bản (diện tích, giá phòng cố định) giúp khách vãng lai dễ dàng tham khảo. |
+| **Đăng Ký** | Biểu mẫu tạo tài khoản mới dành cho khách thuê với các trường thông tin bắt buộc, đảm bảo tính xác thực và tự động mã hóa mật khẩu trước khi lưu xuống CSDL. |
+| **Đăng Nhập** | Form xác thực thông tin người dùng. Tự động nhận diện quyền hạn (`ROLE_ADMIN` hoặc `ROLE_USER`) để điều hướng vào đúng không gian làm việc tương ứng. |
+
+---
+
+### 👤 Không Gian Làm Việc — Khách Thuê (USER)
+
+| Trang | Mô tả chức năng |
+|---|---|
+| **Danh Sách Phòng** | Tra cứu danh sách các phòng trống. Cho phép nhấn "Gửi yêu cầu thuê" trực tiếp và theo dõi trạng thái chờ chủ trọ phê duyệt. |
+| **Hóa Đơn Của Tôi** | Bảng kê chi tiết tài chính hằng tháng. Hiển thị tổng chi phí. Cho phép tải lên ảnh chụp biên lai chuyển khoản để làm minh chứng. |
+| **Hộp Thư chat với admin** | Hệ thống tin nhắn nội bộ giúp khách thuê nói ý kiến của mình cho chủ trọ biết. |
+| **Hồ Sơ Cá Nhân** | Form quản lý thông tin định danh. Cho phép khách thuê cập nhật số điện thoại, quê quán và đặc biệt là tải lên hình ảnh Căn cước công dân (CCCD) mặt trước/sau để đăng ký tạm trú. |
+
+---
+
+### 🛡️ Không Gian Làm Việc — Chủ Trọ (ADMIN)
+
+| Trang | Mô tả chức năng |
+|---|---|
+| **Bảng Điều Khiển (Dashboard)** | Cung cấp cái nhìn tổng quan về hệ thống và cung cấp các phím tắt truy cập nhanh vào các phân hệ quản lý cốt lõi. |
+| **Quản Lý Phòng Trọ** | Trung tâm quản trị hạ tầng. Cho phép thêm phòng mới, cập nhật giá/diện tích và xóa phòng. Tích hợp thuật toán tự động dọn dẹp liên kết khóa ngoại khi xóa để tránh lỗi hệ thống. |
+| **Duyệt Yêu Cầu Thuê** | Xét duyệt các phiếu đăng ký đặt phòng từ khách. Khi nhấn "Duyệt", hệ thống tự động gán mã phòng cho khách và đổi trạng thái phòng thành "Đã thuê". |
+| **Quản Lý & Lập Hóa Đơn** | Công cụ kế toán tự động. Chủ trọ chỉ cần chọn phòng và nhập chỉ số tiêu thụ mới, hệ thống sẽ tự động đối chiếu chỉ số cũ và tính toán ra tổng tiền. |
+| **Quản Lý Tài Khoản** | Giám sát toàn bộ khách thuê trong hệ thống. Cung cấp tính năng xem chi tiết hồ sơ CCCD và nút "Khóa tài khoản" để chặn quyền truy cập của các khách thuê vi phạm nội quy hoặc chậm đóng tiền. |
+| **Quản Lý Thông Báo** | Kênh tiếp nhận và quản lý các tin nhắn từ khách thuê, hỗ trợ chủ trọ phản hồi và nắm bắt tình hình vận hành của từng phòng. |
+
+---
+
 ## 💾 Thiết Kế Lược Đồ Dữ Liệu (MySQL)
 
 Hệ thống tổ chức lưu trữ thông tin tập trung trên RDBMS MySQL thông qua 5 bảng quan hệ logic đã được chuẩn hóa cấu trúc:
@@ -136,3 +184,9 @@ spring.datasource.username=root
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+
+### Bước 3: Khởi chạy và Trải nghiệm quyền truy cập
+Tìm đến class chạy chính chứa annotation `@SpringBootApplication` để khởi động ứng dụng Server bằng Eclipse. Khi hệ thống báo chạy thành công, truy cập đường dẫn `http://localhost:8080` trên trình duyệt.
+
+Sử dụng các tài khoản kiểm thử đã được cấu hình sẵn dưới cơ sở dữ liệu để test luồng nghiệp vụ:
+* **Tài khoản nhóm Admin (Chủ trọ):** `admin1` | Mật khẩu: `123`
