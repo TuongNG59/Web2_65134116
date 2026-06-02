@@ -87,4 +87,15 @@ public class AdminController {
         }
         return "redirect:/admin/tai-khoan"; // Đổi xong quay về lại trang danh sách tài khoản
     }
+    
+    // Xem chi tiết thông tin một tài khoản
+    @GetMapping("/tai-khoan/chi-tiet/{id}")
+    public String chiTietTaiKhoan(@PathVariable("id") Long id, Model model) {
+        com.qlpt.nguyenhuynhtuong65134116.Models.NguoiDung user = nguoiDungService.findById(id);
+        if (user != null) {
+            model.addAttribute("khachHang", user);
+            return "admin/admin_chi_tiet_tai_khoan";
+        }
+        return "redirect:/admin/tai-khoan?loi_khong_tim_thay_user";
+    }
 }
