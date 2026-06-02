@@ -178,12 +178,16 @@ Hệ thống tổ chức lưu trữ thông tin tập trung trên RDBMS MySQL th�
 
 ### Bước 2: Thiết lập tham số kết nối cấu hình Spring Boot
 Mở mã nguồn dự án trên IDE, tìm đến file cấu hình hệ thống `src/main/resources/application.properties` để điều chỉnh thông số truy cập MySQL của máy cậu:
+
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/quanlyphongtro?useUnicode=true&characterEncoding=UTF-8
 spring.datasource.username=root
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+```
+
+***
 
 ### Bước 3: Khởi chạy và Trải nghiệm quyền truy cập
 Tìm đến class chạy chính chứa annotation `@SpringBootApplication` để khởi động ứng dụng Server bằng Eclipse. Khi hệ thống báo chạy thành công, truy cập đường dẫn `http://localhost:8080` trên trình duyệt.
